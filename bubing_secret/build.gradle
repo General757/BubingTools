@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -35,3 +35,14 @@ dependencies {
     implementation project(':bubing_tools')
     api 'commons-codec:commons-codec:1.13'
 }
+
+ext {
+    releaseArtifact = 'bubing_secret'
+    releaseVersion = '0.0.1'
+}
+/**①.发布到本地maven仓库*/
+//apply from: '../mavenLocal.gradle'
+/**②.发布到私有服务器maven仓库*/
+//apply from: '../mavenPrivate.gradle'
+/**③.发布到JCenter*/
+apply from: '../mavenJcenter.gradle'
