@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#EE9B00</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- 系统属性配置 -->
+    <color name="window_color">#e0e0e0</color>
+    <color name="transparent">#00ffffff</color>
+    <!-- 基本属性配置 -->
+    <color name="page_base_bg">#e6e6e6</color>
+    <color name="font_base_white">#ffffff</color>
+    <color name="font_base_black">#333333</color>
+    <color name="font_high_black">#000000</color>
+    <color name="font_base_red">#f15353</color>
+    <color name="font_hint_gray">#989898</color>
+    <color name="font_base_green">#6b9225</color>
+    <color name="font_base_yellow">#ee9b00</color>
+    <color name="headbar_base_color">#3d3d3d</color>
+    <color name="headbar_base_bg">#199de8</color>
+    <color name="footbar_base_bg">#e0e0e0</color>
+
+    <!-- 页面属性配置 -->
+</resources>

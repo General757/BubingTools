@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/headbar_base_height"
+        android:background="@color/headbar_base_bg" >
+
+        <ImageView
+            android:id="@+id/appBack"
+            android:layout_width="@dimen/headbar_back_width"
+            android:layout_height="@dimen/headbar_back_height"
+            android:layout_gravity="center_vertical"
+            android:padding="13dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/headbar_base_back" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="佛历"
+            android:textColor="@color/headbar_base_color"
+            android:textSize="@dimen/headbar_base_size" />
+    </FrameLayout>
+
+</FrameLayout>

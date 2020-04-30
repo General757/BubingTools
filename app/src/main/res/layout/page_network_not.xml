@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/networkLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone" >
+
+    <ImageView
+        android:id="@+id/networkImage"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="120dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/networkText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="网络无法连接"
+        android:textColor="@color/font_base_green"
+        android:textSize="@dimen/font_size_32px" />
+
+    <Button
+        android:id="@+id/networkBttn"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_base_bg"
+        android:paddingBottom="4dp"
+        android:text="刷新"
+        android:textColor="@color/font_base_white"
+        android:textSize="@dimen/font_size_36px" />
+
+</LinearLayout>

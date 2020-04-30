@@ -1,0 +1,50 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="tab_group">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="tab_image">
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:contentDescription"></item>
+    </style>
+
+    <style name="tab_title">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/group_tab_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="dialogStyle" parent="android:style/Theme.Dialog">
+        <item name="android:windowEnterAnimation">@anim/dialog_open</item>
+        <item name="android:windowExitAnimation">@anim/dialog_hide</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">#40000000</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="RadiobuttonStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:button">@null</item>
+    </style>
+</resources>

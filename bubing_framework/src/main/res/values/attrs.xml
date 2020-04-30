@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PageIndicator">
+        <attr name="indicatorDrawable" format="reference"></attr>
+        <attr name="indicatorDipSize" format="dimension"></attr>
+        <attr name="indicatorDipWidth" format="dimension"></attr>
+    </declare-styleable>
+
+</resources>

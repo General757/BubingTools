@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/headbar_base_height"
+        android:background="@color/headbar_base_bg">
+
+        <ImageView
+            android:id="@+id/appBack"
+            android:layout_width="@dimen/headbar_back_width"
+            android:layout_height="@dimen/headbar_back_height"
+            android:layout_gravity="center_vertical"
+            android:padding="13dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/headbar_base_back" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="我的"
+            android:textColor="@color/headbar_base_color"
+            android:textSize="@dimen/headbar_base_size" />
+
+        <Button
+            android:id="@+id/loginBttn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="12dp"
+            android:text="登录" />
+    </FrameLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/headbar_base_height">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/infoBttn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="我的"
+                android:textColor="@color/font_base_black"
+                android:textSize="@dimen/font_size_40px" />
+
+            <Button
+                android:id="@+id/messageBttn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="消息"
+                android:textColor="@color/font_base_black"
+                android:textSize="@dimen/font_size_28px" />
+
+            <Button
+                android:id="@+id/rechargeBttn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="充值中心"
+                android:textColor="@color/font_base_black"
+                android:textSize="@dimen/font_size_28px" />
+
+            <Button
+                android:id="@+id/applyBttn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="申请主播"
+                android:textColor="@color/font_base_black"
+                android:textSize="@dimen/font_size_28px" />
+
+            <Button
+                android:id="@+id/perfectBttn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="完善信息"
+                android:textColor="@color/font_base_black"
+                android:textSize="@dimen/font_size_28px" />
+
+            <Button
+                android:id="@+id/settingBttn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置"
+                android:textColor="@color/font_base_black"
+                android:textSize="@dimen/font_size_28px" />
+
+            <Button
+                android:id="@+id/securityBttn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="安全中心"
+                android:textColor="@color/font_base_black"
+                android:textSize="@dimen/font_size_28px" />
+
+            <Button
+                android:id="@+id/followBttn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="我的关注"
+                android:textColor="@color/font_base_black"
+                android:textSize="@dimen/font_size_28px" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

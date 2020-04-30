@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_base_bg">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/headbar_base_height"
+        android:background="@color/headbar_base_bg">
+
+        <ImageView
+            android:id="@+id/appBack"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:padding="12dp"
+            android:src="@drawable/headbar_base_back" />
+
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="webview"
+            android:textColor="@color/headbar_base_color"
+            android:textSize="@dimen/headbar_base_size" />
+    </FrameLayout>
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/headbar_base_height" />
+
+</FrameLayout>

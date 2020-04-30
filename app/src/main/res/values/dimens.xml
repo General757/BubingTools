@@ -1,0 +1,62 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- 常量基本属性 -->
+    <dimen name="headbar_base_height">40dp</dimen>
+    <dimen name="footbar_base_height">48dp</dimen>
+
+    <!-- 字体大小基本属性 -->
+    <dimen name="headbar_base_size">18sp</dimen>
+
+    <!-- 返回按钮宽高 -->
+    <dimen name="headbar_back_width">44dp</dimen>
+    <dimen name="headbar_back_height">44dp</dimen>
+
+    <!-- 字体统一大小 -->
+    <dimen name="font_size_2px">1.0sp</dimen>
+    <dimen name="font_size_4px">2.0sp</dimen>
+    <dimen name="font_size_6px">3.0sp</dimen>
+    <dimen name="font_size_8px">4.0sp</dimen>
+    <dimen name="font_size_10px">5.0sp</dimen>
+    <dimen name="font_size_12px">6.0sp</dimen>
+    <dimen name="font_size_14px">7.0sp</dimen>
+    <dimen name="font_size_16px">8.0sp</dimen>
+    <dimen name="font_size_18px">9.0sp</dimen>
+    <dimen name="font_size_20px">10.0sp</dimen>
+    <dimen name="font_size_22px">11.0sp</dimen>
+    <dimen name="font_size_24px">12.0sp</dimen>
+    <dimen name="font_size_26px">13.0sp</dimen>
+    <dimen name="font_size_28px">14.0sp</dimen>
+    <dimen name="font_size_30px">15.0sp</dimen>
+    <dimen name="font_size_32px">16.0sp</dimen>
+    <dimen name="font_size_34px">17.0sp</dimen>
+    <dimen name="font_size_36px">18.0sp</dimen>
+    <dimen name="font_size_38px">19.0sp</dimen>
+    <dimen name="font_size_40px">20.0sp</dimen>
+    <dimen name="font_size_42px">21.0sp</dimen>
+    <dimen name="font_size_44px">22.0sp</dimen>
+    <dimen name="font_size_46px">23.0sp</dimen>
+    <dimen name="font_size_48px">24.0sp</dimen>
+    <dimen name="font_size_50px">25.0sp</dimen>
+    <dimen name="font_size_52px">26.0sp</dimen>
+    <dimen name="font_size_54px">27.0sp</dimen>
+    <dimen name="font_size_56px">28.0sp</dimen>
+    <dimen name="font_size_58px">29.0sp</dimen>
+    <dimen name="font_size_60px">30.0sp</dimen>
+    <dimen name="font_size_62px">31.0sp</dimen>
+    <dimen name="font_size_64px">32.0sp</dimen>
+    <dimen name="font_size_66px">33.0sp</dimen>
+    <dimen name="font_size_68px">34.0sp</dimen>
+    <dimen name="font_size_70px">35.0sp</dimen>
+    <dimen name="font_size_72px">36.0sp</dimen>
+    <dimen name="font_size_74px">37.0sp</dimen>
+    <dimen name="font_size_76px">38.0sp</dimen>
+    <dimen name="font_size_78px">39.0sp</dimen>
+    <dimen name="font_size_80px">40.0sp</dimen>
+
+    <!-- 按钮同一高度 -->
+    <dimen name="button_base_height">40dp</dimen>
+
+</resources>

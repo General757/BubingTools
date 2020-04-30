@@ -1,0 +1,2 @@
+include ':app', ':bubing_camera', ':bubing_framework', ':bubing_tools', ':bubing_secret'
+rootProject.name='BubingTools'

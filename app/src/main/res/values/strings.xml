@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BubingTools</string>
+
+    <!--直播-->
+    <string name="type_master">大师</string>
+    <string name="type_ordinary">普通</string>
+    <string name="type_recording">录播</string>
+    <string name="type_other">其他</string>
+</resources>
