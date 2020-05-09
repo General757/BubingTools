@@ -6,7 +6,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
+
+import com.bubing.camera.utils.BubingLog;
 
 import java.util.Calendar;
 
@@ -162,7 +163,7 @@ public class SensorControler implements SensorEventListener {
     public void lockFocus() {
         isFocusing = true;
         foucsing--;
-        Log.i(TAG, "lockFocus");
+        BubingLog.i(TAG, "lockFocus");
     }
 
     /**
@@ -171,13 +172,12 @@ public class SensorControler implements SensorEventListener {
     public void unlockFocus() {
         isFocusing = false;
         foucsing++;
-        Log.i(TAG, "unlockFocus");
+        BubingLog.i(TAG, "unlockFocus");
     }
 
     public void restFoucs() {
         foucsing = 1;
     }
-
 
     private CameraFocusListener mCameraFocusListener;
 

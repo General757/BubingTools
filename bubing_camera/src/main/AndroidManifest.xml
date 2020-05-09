@@ -19,13 +19,13 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".CameraLandscapeActivity"
+            android:name=".ui.CameraLandscapeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
 
         <activity
-            android:name=".CameraPortraitActivity"
+            android:name=".ui.CameraPortraitActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />

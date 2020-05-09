@@ -3,6 +3,9 @@ package com.bubing.camera;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.bubing.camera.ui.CameraLandscapeActivity;
+import com.bubing.camera.ui.CameraPortraitActivity;
+
 import java.lang.ref.WeakReference;
 
 import androidx.fragment.app.Fragment;

@@ -6,10 +6,10 @@ import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.bubing.camera.utils.BubingLog;
 import com.bubing.camera.utils.CameraUtils;
 import com.bubing.camera.utils.ScreenUtils;
 
@@ -22,8 +22,7 @@ import java.util.List;
  * @Date: 2020-04-29 16:44
  */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-
-    private static String TAG = CameraPreview.class.getName();
+    private String TAG = CameraPreview.class.getName();
 
     private Camera camera;
     private AutoFocusManager mAutoFocusManager;
@@ -84,7 +83,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 focus();//首次对焦
                 //mAutoFocusManager = new AutoFocusManager(camera);//定时对焦
             } catch (Exception e) {
-                Log.d(TAG, "Error setting camera preview: " + e.getMessage());
+                BubingLog.d(TAG, "Error setting camera preview: " + e.getMessage());
                 try {
                     Camera.Parameters parameters = camera.getParameters();
                     if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -185,7 +184,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             try {
                 camera.autoFocus(null);
             } catch (Exception e) {
-                Log.d(TAG, "takePhoto " + e);
+                BubingLog.d(TAG, "takePhoto " + e);
             }
         }
     }
@@ -221,7 +220,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             try {
                 camera.takePicture(null, null, pictureCallback);
             } catch (Exception e) {
-                Log.d(TAG, "takePhoto " + e);
+                BubingLog.d(TAG, "takePhoto " + e);
             }
         }
     }

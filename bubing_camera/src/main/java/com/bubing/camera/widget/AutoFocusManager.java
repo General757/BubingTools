@@ -4,7 +4,8 @@ import android.annotation.SuppressLint;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
+
+import com.bubing.camera.utils.BubingLog;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,14 +54,14 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
         if (!stopped && outstandingTask == null) {
             AutoFocusTask newTask = new AutoFocusTask();
             try {
-                if (Build.VERSION.SDK_INT >= 11) {
+                if (Build.VERSION.SDK_INT >= 11)
                     newTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } else {
+                else
                     newTask.execute();
-                }
+
                 outstandingTask = newTask;
             } catch (RejectedExecutionException ree) {
-                Log.w(TAG, "Could not request auto focus", ree);
+                BubingLog.w(TAG, "Could not request auto focus", ree);
             }
         }
     }
@@ -71,12 +72,12 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
             if (!stopped && !focusing) {
                 try {
                     camera.autoFocus(this);
-                    Log.w(TAG, "自动对焦");
+                    BubingLog.w(TAG, "自动对焦");
                     focusing = true;
                 } catch (RuntimeException re) {
                     // Have heard RuntimeException reported in Android 4.0.x+;
                     // continue?
-                    Log.w(TAG, "Unexpected exception while focusing", re);
+                    BubingLog.w(TAG, "Unexpected exception while focusing", re);
                     // Try again later to keep cycle going
                     autoFocusAgainLater();
                 }
@@ -86,9 +87,8 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
 
     private synchronized void cancelOutstandingTask() {
         if (outstandingTask != null) {
-            if (outstandingTask.getStatus() != AsyncTask.Status.FINISHED) {
+            if (outstandingTask.getStatus() != AsyncTask.Status.FINISHED)
                 outstandingTask.cancel(true);
-            }
             outstandingTask = null;
         }
     }
@@ -103,7 +103,7 @@ public class AutoFocusManager implements Camera.AutoFocusCallback {
             } catch (RuntimeException re) {
                 // Have heard RuntimeException reported in Android 4.0.x+;
                 // continue?
-                Log.w(TAG, "Unexpected exception while cancelling focusing", re);
+                BubingLog.w(TAG, "Unexpected exception while cancelling focusing", re);
             }
         }
     }

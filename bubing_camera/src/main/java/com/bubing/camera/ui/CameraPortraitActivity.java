@@ -1,15 +1,14 @@
-package com.bubing.camera;
+package com.bubing.camera.ui;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bubing.camera.ConstantCamera;
+import com.bubing.camera.DirectionMode;
+import com.bubing.camera.R;
+import com.bubing.camera.utils.BubingLog;
 import com.bubing.camera.utils.CameraUtils;
 import com.bubing.camera.utils.ImageUtils;
 import com.bubing.camera.utils.PermissionUtils;
@@ -32,12 +35,12 @@ import java.io.IOException;
 import androidx.core.app.ActivityCompat;
 
 /**
- * @ClassName: CameraLandscapeActivity
- * @Description: 拍照界面-横屏
+ * @ClassName: CameraPortraitActivity
+ * @Description: 拍照界面-竖屏
  * @Author: bubing
  * @Date: 2020-04-29 17:25
  */
-public class CameraLandscapeActivity extends Activity implements View.OnClickListener {
+public class CameraPortraitActivity extends Activity implements View.OnClickListener {
     private static final String TAG = CameraLandscapeActivity.class.getSimpleName();
 
     private DirectionMode mDirectionMode;//拍摄类型
@@ -48,9 +51,9 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         int takeType = getIntent().getIntExtra(ConstantCamera.TAKE_TYPE, 0);
         mDirectionMode = DirectionMode.valueOf(takeType);
-        Log.d(TAG, "initPermissions takeType: " + takeType + " mDirectionMode：" + mDirectionMode);
+        BubingLog.d(TAG, "initPermissions takeType: " + takeType + " mDirectionMode：" + mDirectionMode);
         if (mDirectionMode != null) {
-            setContentView(R.layout.activity_camera_landscape);
+            setContentView(R.layout.activity_camera_portrait);
 
             /*动态请求需要的权限*/
             boolean checkPermissionFirst = PermissionUtils.checkPermissionFirst(this, ConstantCamera.PERMISSION_CODE_FIRST,
@@ -58,7 +61,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
             if (checkPermissionFirst)
                 initView();
         } else {
-            Log.e(TAG, "initPermissions : " + "拍照类型获取失败");
+            BubingLog.e(TAG, "initPermissions : " + "拍照类型获取失败");
             finish();
         }
     }
@@ -87,10 +90,10 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
         }
         isToast = true;
         if (isPermissions) {
-            Log.d("onRequestPermission", "onRequestPermissionsResult: " + "允许所有权限");
+            BubingLog.d("onRequestPermission", "onRequestPermissionsResult: " + "允许所有权限");
             initView();
         } else {
-            Log.d("onRequestPermission", "onRequestPermissionsResult: " + "有权限不允许");
+            BubingLog.d("onRequestPermission", "onRequestPermissionsResult: " + "有权限不允许");
             finish();
         }
     }
@@ -119,7 +122,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
 
         mCameraCropLeftView = findViewById(R.id.camera_crop_left_view);
         mCameraCropContainerLayout = findViewById(R.id.camera_crop_container_layout);
-        mCameraCropImage = (ImageView) findViewById(R.id.camera_crop_image);
+        mCameraCropImage = findViewById(R.id.camera_crop_image);
         float width = 0;
         float height = 0;
         LinearLayout.LayoutParams params;
@@ -202,9 +205,6 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
         }
     }
 
-    /**
-     * 拍照
-     */
     private void takePhoto() {
         mCameraOptionLayout.setVisibility(View.GONE);
         mCameraPreview.setEnabled(false);
@@ -217,7 +217,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
                     @Override
                     public void run() {
                         try {
-                            Bitmap bitmap = ImageUtils.getBitmapFromByte(bytes, size.width, size.height);
+                            Bitmap bitmaps = ImageUtils.getBitmapFromByte(bytes, size.width, size.height);
 
                             //计算裁剪位置
                             float left, top, right, bottom;
@@ -232,6 +232,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
                                 right = (float) mCameraCropContainerLayout.getRight() / (float) mCameraPreview.getWidth();
                                 bottom = (float) mCameraCropImage.getBottom() / (float) mCameraPreview.getHeight();
                             }
+                            Bitmap bitmap = createPhotos(bitmaps);
                             //裁剪及保存到文件
                             Bitmap cropBitmap = Bitmap.createBitmap(bitmap,
                                     (int) (left * (float) bitmap.getWidth()),
@@ -269,73 +270,19 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
         });
     }
 
-    private void takePhoto1() {
-        mCameraOptionLayout.setVisibility(View.GONE);
-        mCameraPreview.setEnabled(false);
-        mCameraPreview.takePhoto(new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(final byte[] data, Camera camera) {
-                camera.stopPreview();
-                //子线程处理图片，防止ANR
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            File originalFile = getOriginalFile();
-                            FileOutputStream originalFileOutputStream = new FileOutputStream(originalFile);
-                            originalFileOutputStream.write(data);
-                            originalFileOutputStream.close();
-
-                            Bitmap bitmap = BitmapFactory.decodeFile(originalFile.getPath());
-
-                            //计算裁剪位置
-                            float left, top, right, bottom;
-                            if (DirectionMode.MODE_COMPANY_PORTRAIT == mDirectionMode) {
-                                left = (float) mCameraCropImage.getLeft() / (float) mCameraPreview.getWidth();
-                                top = ((float) mCameraCropContainerLayout.getTop() - (float) mCameraPreview.getTop()) / (float) mCameraPreview.getHeight();
-                                right = (float) mCameraCropImage.getRight() / (float) mCameraPreview.getWidth();
-                                bottom = (float) mCameraCropContainerLayout.getBottom() / (float) mCameraPreview.getHeight();
-                            } else {
-                                left = ((float) mCameraCropContainerLayout.getLeft() - (float) mCameraPreview.getLeft()) / (float) mCameraPreview.getWidth();
-                                top = (float) mCameraCropImage.getTop() / (float) mCameraPreview.getHeight();
-                                right = (float) mCameraCropContainerLayout.getRight() / (float) mCameraPreview.getWidth();
-                                bottom = (float) mCameraCropImage.getBottom() / (float) mCameraPreview.getHeight();
-                            }
-                            //裁剪及保存到文件
-                            Bitmap cropBitmap = Bitmap.createBitmap(bitmap,
-                                    (int) (left * (float) bitmap.getWidth()),
-                                    (int) (top * (float) bitmap.getHeight()),
-                                    (int) ((right - left) * (float) bitmap.getWidth()),
-                                    (int) ((bottom - top) * (float) bitmap.getHeight()));
-
-                            final File cropFile = getCropFile();
-                            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cropFile));
-                            cropBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                            bos.flush();
-                            bos.close();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mCameraResultLayout.setVisibility(View.VISIBLE);
-                                }
-                            });
-                            return;
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mCameraOptionLayout.setVisibility(View.VISIBLE);
-                                mCameraPreview.setEnabled(true);
-                            }
-                        });
-                    }
-                }).start();
+    public static Bitmap createPhotos(Bitmap bitmap) {
+        if (bitmap != null) {
+            Matrix m = new Matrix();
+            try {
+                m.setRotate(90, bitmap.getWidth() / 2, bitmap.getHeight() / 2);//90就是我们需要选择的90度
+                Bitmap bmp2 = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
+                bitmap.recycle();
+                bitmap = bmp2;
+            } catch (Exception ex) {
+                System.out.print("创建图片失败！" + ex);
             }
-        });
+        }
+        return bitmap;
     }
 
     /**
