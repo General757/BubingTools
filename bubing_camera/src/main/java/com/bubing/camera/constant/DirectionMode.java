@@ -1,4 +1,4 @@
-package com.bubing.camera;
+package com.bubing.camera.constant;
 
 /**
  * @ClassName: DirectionMode
@@ -22,7 +22,7 @@ public enum DirectionMode {
 
     private int value;
 
-    private DirectionMode(int value) {
+    DirectionMode(int value) {
         this.value = value;
     }
 

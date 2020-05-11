@@ -1,4 +1,4 @@
-package com.bubing.camera.models;
+package com.bubing.camera.constant;
 
 /**
  * @ClassName: ImageType

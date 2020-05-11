@@ -42,7 +42,7 @@ public class CameraPhotoAdapter extends RecyclerView.Adapter<CameraPhotoAdapter.
     @Override
     public void onBindViewHolder(MainVH holder, int position) {
         ResultPhoto photo = list.get(position);
-        mGlide.load(photo.getUri()).into(holder.ivPhoto);
+        mGlide.load(photo.getOriginalUri()).into(holder.ivPhoto);
 
         holder.tvMessage.setText(
                 "[图片名称]： " + photo.getName() +

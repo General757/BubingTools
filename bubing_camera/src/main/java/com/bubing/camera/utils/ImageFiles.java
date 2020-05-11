@@ -106,8 +106,13 @@ public class ImageFiles {
             throw new BException(BExceptionType.TYPE_NOT_IMAGE);
         }
         String filesPath = FilePathUtils.getInstance().getFileCacheDir(context, FilePathUtils.FileType.TEMP);//out path
-        return new File(filesPath, UUID.randomUUID().toString() + "." + minType);
+//        String filesPath = FilePathUtils.getInstance().getFileDir(context, FilePathUtils.FileType.TEMP);//out path
+        File file = new File(filesPath, UUID.randomUUID().toString() + "." + minType);
+        if (!file.getParentFile().exists())
+            file.getParentFile().mkdirs();
+        return file;
     }
+
     /**
      * 获取临时文件
      *

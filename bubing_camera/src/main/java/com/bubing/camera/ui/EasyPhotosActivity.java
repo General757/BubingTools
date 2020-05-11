@@ -34,7 +34,7 @@ import com.bubing.camera.constant.Constants;
 import com.bubing.camera.exception.BException;
 import com.bubing.camera.exception.BExceptionType;
 import com.bubing.camera.models.ContextWrap;
-import com.bubing.camera.models.ImageType;
+import com.bubing.camera.constant.ImageType;
 import com.bubing.camera.models.ad.AdListener;
 import com.bubing.camera.models.ad.AdUtils;
 import com.bubing.camera.models.album.AlbumModel;

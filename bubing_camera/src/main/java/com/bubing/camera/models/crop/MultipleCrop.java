@@ -3,7 +3,7 @@ package com.bubing.camera.models.crop;
 import android.app.Activity;
 
 import com.bubing.camera.exception.BException;
-import com.bubing.camera.models.ImageType;
+import com.bubing.camera.constant.ImageType;
 import com.bubing.camera.models.ResultPhoto;
 import com.bubing.camera.models.album.entity.Photo;
 import com.bubing.camera.utils.PhotoUtils;

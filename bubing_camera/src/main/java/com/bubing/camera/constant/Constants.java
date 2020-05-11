@@ -14,6 +14,11 @@ public class Constants {
 
     //key的常量
     public class Key {
+        //证件-拍摄类型标记
+        public final static String RESULT_CERTIFICATE_TYPE = "keyOfCertificateTypeResult";
+        //证件-图片路径标记
+        public final static String RESULT_CERTIFICATE_PATH = "keyOfCertificatePathResult";
+
         //easyPhotos的返回数据Key
         public static final String RESULT_PHOTOS = "keyOfEasyPhotosResult";
 
@@ -41,14 +46,17 @@ public class Constants {
 
     //Code常量
     public class Code {
+        //权限请求码
+        public final static int REQUEST_CODE_PERMISSIONS = 0x12;
+
+        //权限请求码
+        public static final int REQUEST_PERMISSION = 12;
+
         //请求应用详情
         public static final int REQUEST_SETTING_APP_DETAILS = 14;
 
         //相机请求码
         public static final int REQUEST_CAMERA = 11;
-
-        //权限请求码
-        public static final int REQUEST_PERMISSION = 12;
 
         //预览activity请求码
         public static final int REQUEST_PREVIEW_ACTIVITY = 13;

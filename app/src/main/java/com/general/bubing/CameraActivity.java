@@ -10,8 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bubing.camera.CameraTools;
-import com.bubing.camera.ConstantCamera;
-import com.bubing.camera.DirectionMode;
+import com.bubing.camera.constant.DirectionMode;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +37,7 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == ConstantCamera.RESULT_CODE) {
+        if (resultCode == RESULT_OK) {
             //获取文件路径，显示图片
             final String path = CameraTools.getImagePath(data);
             Log.e("!!! ### ", "image_path：" + path);

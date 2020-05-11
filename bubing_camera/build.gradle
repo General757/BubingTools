@@ -23,7 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
@@ -48,8 +47,8 @@ ext {
     releaseVersion = '0.0.1'
 }
 /**①.发布到本地maven仓库*/
-//apply from: '../mavenLocal.gradle'
+apply from: '../mavenLocal.gradle'
 /**②.发布到私有服务器maven仓库*/
 //apply from: '../mavenPrivate.gradle'
 /**③.发布到JCenter*/
-apply from: '../mavenJcenter.gradle'
+//apply from: '../mavenJcenter.gradle'

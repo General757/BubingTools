@@ -3,6 +3,8 @@ package com.bubing.camera;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.bubing.camera.constant.Constants;
+import com.bubing.camera.constant.DirectionMode;
 import com.bubing.camera.ui.CameraLandscapeActivity;
 import com.bubing.camera.ui.CameraPortraitActivity;
 
@@ -55,7 +57,7 @@ public class CameraTools {
         else
             intent = new Intent(activity, CameraLandscapeActivity.class);
         if (intent != null) {
-            intent.putExtra(ConstantCamera.TAKE_TYPE, directionMode.getValue());
+            intent.putExtra(Constants.Key.RESULT_CERTIFICATE_TYPE, directionMode.getValue());
             if (fragment != null)
                 fragment.startActivityForResult(intent, directionMode.getValue());
             else
@@ -71,7 +73,7 @@ public class CameraTools {
      */
     public static String getImagePath(Intent data) {
         if (data != null)
-            return data.getStringExtra(ConstantCamera.IMAGE_PATH);
+            return data.getStringExtra(Constants.Key.RESULT_CERTIFICATE_PATH);
         return "";
     }
 }

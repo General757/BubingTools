@@ -59,10 +59,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/EasyPhotosTheme" />
 
-        <activity
-            android:name="com.soundcloud.android.crop.CropImageActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>
 
 </manifest>

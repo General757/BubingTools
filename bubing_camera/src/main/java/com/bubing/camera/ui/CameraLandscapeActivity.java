@@ -16,9 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.bubing.camera.ConstantCamera;
-import com.bubing.camera.DirectionMode;
+import com.bubing.camera.constant.DirectionMode;
 import com.bubing.camera.R;
+import com.bubing.camera.constant.Constants;
 import com.bubing.camera.utils.BubingLog;
 import com.bubing.camera.utils.CameraUtils;
 import com.bubing.camera.utils.ImageUtils;
@@ -49,14 +49,14 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int takeType = getIntent().getIntExtra(ConstantCamera.TAKE_TYPE, 0);
+        int takeType = getIntent().getIntExtra(Constants.Key.RESULT_CERTIFICATE_TYPE, 0);
         mDirectionMode = DirectionMode.valueOf(takeType);
         BubingLog.d(TAG, "initPermissions takeType: " + takeType + " mDirectionMode：" + mDirectionMode);
         if (mDirectionMode != null) {
             setContentView(R.layout.activity_camera_landscape);
 
             /*动态请求需要的权限*/
-            boolean checkPermissionFirst = PermissionUtils.checkPermissionFirst(this, ConstantCamera.PERMISSION_CODE_FIRST,
+            boolean checkPermissionFirst = PermissionUtils.checkPermissionFirst(this, Constants.Code.REQUEST_CODE_PERMISSIONS,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA});
             if (checkPermissionFirst)
                 initView();
@@ -378,8 +378,8 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
      */
     private void confirm() {
         Intent intent = new Intent();
-        intent.putExtra(ConstantCamera.IMAGE_PATH, getCropFile().getPath());
-        setResult(ConstantCamera.RESULT_CODE, intent);
+        intent.putExtra(Constants.Key.RESULT_CERTIFICATE_PATH, getCropFile().getPath());
+        setResult(RESULT_OK, intent);
         finish();
     }
 

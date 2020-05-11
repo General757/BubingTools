@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.bubing.camera.exception.BException;
-import com.bubing.camera.models.ImageType;
+import com.bubing.camera.constant.ImageType;
 import com.bubing.camera.models.album.entity.Photo;
 import com.bubing.camera.models.ResultPhoto;
 

@@ -14,13 +14,10 @@ import com.bubing.camera.constant.Constants;
 import com.bubing.camera.exception.BException;
 import com.bubing.camera.exception.BExceptionType;
 import com.bubing.camera.models.ContextWrap;
-import com.bubing.camera.models.ImageType;
 import com.bubing.camera.models.IntentWap;
-import com.bubing.camera.models.album.entity.Photo;
 import com.bubing.camera.utils.IntentUtils;
 import com.soundcloud.android.crop.Crop;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
