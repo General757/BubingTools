@@ -9,25 +9,25 @@ package com.bubing.camera.constant;
 public enum StartupType {
 
     //CAMERA-相机
-    CAMERA(10),
+    CAMERA(100),
 
     //CAMERA-身份证正面
-    CAMERA_IDCARD_FRONT(11),
+    CAMERA_IDCARD_FRONT(110),
 
     //CAMERA-身份证反面
-    CAMERA_IDCARD_BACK(12),
+    CAMERA_IDCARD_BACK(120),
 
     // CAMERA-竖版营业执照
-    CAMERA_COMPANY_PORTRAIT(13),
+    CAMERA_COMPANY_PORTRAIT(130),
 
     // CAMERA-横版营业执照
-    CAMERA_COMPANY_LANDSCAPE(14),
+    CAMERA_COMPANY_LANDSCAPE(140),
 
     //ALBUM-相册专辑
-    ALBUM(20),
+    ALBUM(200),
 
     //ALBUM_CAMERA-带有相机按钮的相册专辑
-    ALBUM_CAMERA(30);
+    ALBUM_CAMERA(210);
 
     private int value;
 

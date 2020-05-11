@@ -21,7 +21,7 @@ import com.bubing.camera.R;
 import com.bubing.camera.constant.Constants;
 import com.bubing.camera.models.album.AlbumModel;
 import com.bubing.camera.models.album.entity.Photo;
-import com.bubing.camera.result.Result;
+import com.bubing.camera.result.ResultStorage;
 import com.bubing.camera.setting.Setting;
 import com.bubing.camera.ui.adapter.PreviewPhotosAdapter;
 import com.bubing.camera.utils.ColorUtils;
@@ -90,7 +90,7 @@ public class PreviewActivity extends AppCompatActivity implements PreviewPhotosA
     private int resultCode = RESULT_CANCELED;
     private int lastPosition = 0;//记录recyclerView最后一次角标位置，用于判断是否转换了item
     private boolean isSingle = Setting.count == 1;
-    private boolean unable = Result.count() == Setting.count;
+    private boolean unable = ResultStorage.count() == Setting.count;
 
     private FrameLayout flFragment;
     private PreviewFragment previewFragment;
@@ -136,7 +136,7 @@ public class PreviewActivity extends AppCompatActivity implements PreviewPhotosA
         photos.clear();
 
         if (albumItemIndex == -1) {
-            photos.addAll(Result.photos);
+            photos.addAll(ResultStorage.photos);
         } else {
             photos.addAll(AlbumModel.instance.getCurrAlbumItemPhotos(albumItemIndex));
         }
@@ -331,9 +331,9 @@ public class PreviewActivity extends AppCompatActivity implements PreviewPhotosA
     private void toggleSelector() {
         if (photos.get(lastPosition).selected) {
             ivSelector.setImageResource(R.drawable.ic_selector_true_easy_photos);
-            if (!Result.isEmpty()) {
-                for (int i = 0; i < Result.count(); i++) {
-                    if (photos.get(lastPosition).path.equals(Result.getPhotoPath(i))) {
+            if (!ResultStorage.isEmpty()) {
+                for (int i = 0; i < ResultStorage.count(); i++) {
+                    if (photos.get(lastPosition).path.equals(ResultStorage.getPhotoPath(i))) {
                         previewFragment.setSelectedPosition(i);
                         break;
                     }
@@ -355,7 +355,7 @@ public class PreviewActivity extends AppCompatActivity implements PreviewPhotosA
         }
         if (unable) {
             if (item.selected) {
-                Result.removePhoto(item);
+                ResultStorage.removePhoto(item);
                 if (unable) {
                     unable = false;
                 }
@@ -377,7 +377,7 @@ public class PreviewActivity extends AppCompatActivity implements PreviewPhotosA
         }
         item.selected = !item.selected;
         if (item.selected) {
-            int res = Result.addPhoto(item);
+            int res = ResultStorage.addPhoto(item);
             if (res != 0) {
                 item.selected = false;
                 switch (res) {
@@ -394,11 +394,11 @@ public class PreviewActivity extends AppCompatActivity implements PreviewPhotosA
                 }
                 return;
             }
-            if (Result.count() == Setting.count) {
+            if (ResultStorage.count() == Setting.count) {
                 unable = true;
             }
         } else {
-            Result.removePhoto(item);
+            ResultStorage.removePhoto(item);
             previewFragment.setSelectedPosition(-1);
             if (unable) {
                 unable = false;
@@ -408,23 +408,23 @@ public class PreviewActivity extends AppCompatActivity implements PreviewPhotosA
     }
 
     private void singleSelector(Photo photo) {
-        if (!Result.isEmpty()) {
-            if (Result.getPhotoPath(0).equals(photo.path)) {
-                Result.removePhoto(photo);
+        if (!ResultStorage.isEmpty()) {
+            if (ResultStorage.getPhotoPath(0).equals(photo.path)) {
+                ResultStorage.removePhoto(photo);
                 toggleSelector();
             } else {
-                Result.removePhoto(0);
-                Result.addPhoto(photo);
+                ResultStorage.removePhoto(0);
+                ResultStorage.addPhoto(photo);
                 toggleSelector();
             }
         } else {
-            Result.addPhoto(photo);
+            ResultStorage.addPhoto(photo);
             toggleSelector();
         }
     }
 
     private void shouldShowMenuDone() {
-        if (Result.isEmpty()) {
+        if (ResultStorage.isEmpty()) {
             if (View.VISIBLE == tvDone.getVisibility()) {
                 ScaleAnimation scaleHide = new ScaleAnimation(1f, 0f, 1f, 0f);
                 scaleHide.setDuration(200);
@@ -440,14 +440,14 @@ public class PreviewActivity extends AppCompatActivity implements PreviewPhotosA
             }
             flFragment.setVisibility(View.VISIBLE);
             tvDone.setVisibility(View.VISIBLE);
-            tvDone.setText(getString(R.string.selector_action_done_easy_photos, Result.count(),
+            tvDone.setText(getString(R.string.selector_action_done_easy_photos, ResultStorage.count(),
                     Setting.count));
         }
     }
 
     @Override
     public void onPreviewPhotoClick(int position) {
-        String path = Result.getPhotoPath(position);
+        String path = ResultStorage.getPhotoPath(position);
         for (int i = 0; i < photos.size(); i++) {
             if (TextUtils.equals(path, photos.get(i).path)) {
                 rvPhotos.scrollToPosition(i);

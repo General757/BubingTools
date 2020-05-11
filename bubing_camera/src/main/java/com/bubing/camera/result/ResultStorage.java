@@ -11,12 +11,12 @@ import com.bubing.camera.setting.Setting;
 import java.util.ArrayList;
 
 /**
- * @ClassName: Result
+ * @ClassName: ResultStorage
  * @Description: 存储的返回图片集
  * @Author: bubing
  * @Date: 2020-05-09 15:26
  */
-public class Result {
+public class ResultStorage {
     public static ArrayList<Photo> photos = new ArrayList<>();
 
     /**

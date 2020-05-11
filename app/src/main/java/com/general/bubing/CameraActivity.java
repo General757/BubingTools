@@ -9,8 +9,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bubing.camera.CameraTools;
-import com.bubing.camera.constant.DirectionMode;
+import com.bubing.camera.TakePhotoImpl;
+import com.bubing.camera.constant.Constants;
+import com.bubing.camera.constant.StartupType;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
  * @Date: 2020-04-30 13:01
  */
 public class CameraActivity extends AppCompatActivity {
+
+    public static final int REQUEST_CAMERA = 0x01;
+
     private ImageView imageView;
     private TextView imageText;
 
@@ -37,19 +41,19 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            //获取文件路径，显示图片
-            final String path = CameraTools.getImagePath(data);
-            Log.e("!!! ### ", "image_path：" + path);
-            if (!TextUtils.isEmpty(path)) {
+        if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK && data != null) {
+            int type = data.getIntExtra(Constants.Key.RESULT_CERTIFICATE_TYPE, 0);
+            String path = data.getStringExtra(Constants.Key.RESULT_CERTIFICATE_PATH);
+            Log.e("!!! ### ", "type：" + type + "image_path：" + path);
+            if (type > 0 && !TextUtils.isEmpty(path)) {
                 imageView.setImageBitmap(BitmapFactory.decodeFile(path));
-                if (requestCode == DirectionMode.MODE_IDCARD_FRONT.getValue()) { //身份证正面
+                if (type == StartupType.CAMERA_IDCARD_FRONT.getValue()) { //身份证正面
                     imageText.setText("身份证正面");
-                } else if (requestCode == DirectionMode.MODE_IDCARD_BACK.getValue()) {  //身份证反面
+                } else if (type == StartupType.CAMERA_IDCARD_BACK.getValue()) {  //身份证反面
                     imageText.setText("身份证反面");
-                } else if (requestCode == DirectionMode.MODE_COMPANY_PORTRAIT.getValue()) {  //营业执照竖版
+                } else if (type == StartupType.CAMERA_COMPANY_PORTRAIT.getValue()) {  //营业执照竖版
                     imageText.setText("营业执照竖版");
-                } else if (requestCode == DirectionMode.MODE_COMPANY_LANDSCAPE.getValue()) {  //营业执照横版
+                } else if (type == StartupType.CAMERA_COMPANY_LANDSCAPE.getValue()) {  //营业执照横版
                     imageText.setText("营业执照横版");
                 }
             }
@@ -60,27 +64,27 @@ public class CameraActivity extends AppCompatActivity {
      * 身份证正面
      */
     public void frontIdCard(View view) {
-        CameraTools.create(this).openCertificateCamera(DirectionMode.MODE_IDCARD_FRONT);
+        TakePhotoImpl.createCamera(this, StartupType.CAMERA_IDCARD_FRONT).start(REQUEST_CAMERA);
     }
 
     /**
      * 身份证反面
      */
     public void backIdCard(View view) {
-        CameraTools.create(this).openCertificateCamera(DirectionMode.MODE_IDCARD_BACK);
+        TakePhotoImpl.createCamera(this, StartupType.CAMERA_IDCARD_BACK).start(REQUEST_CAMERA);
     }
 
     /**
      * 营业执照竖版
      */
     public void businessLicensePortrait(View view) {
-        CameraTools.create(this).openCertificateCamera(DirectionMode.MODE_COMPANY_PORTRAIT);
+        TakePhotoImpl.createCamera(this, StartupType.CAMERA_COMPANY_PORTRAIT).start(REQUEST_CAMERA);
     }
 
     /**
      * 营业执照横版
      */
     public void businessLicenseLandscape(View view) {
-        CameraTools.create(this).openCertificateCamera(DirectionMode.MODE_COMPANY_LANDSCAPE);
+        TakePhotoImpl.createCamera(this, StartupType.CAMERA_COMPANY_LANDSCAPE).start(REQUEST_CAMERA);
     }
 }

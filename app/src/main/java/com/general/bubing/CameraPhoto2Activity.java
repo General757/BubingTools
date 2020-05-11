@@ -8,20 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import com.bubing.camera.CameraPhotoTools;
+import com.bubing.camera.TakePhotoImpl;
 import com.bubing.camera.constant.Constants;
 import com.bubing.camera.models.album.entity.Photo;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * @ClassName: CameraPhoto2Activity
@@ -102,7 +102,7 @@ public class CameraPhoto2Activity extends AppCompatActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CameraPhotoTools.createAlbum(PlaceholderFragment.this, true, GlideEngine.getInstance()).start(0);
+                    TakePhotoImpl.createAlbum(PlaceholderFragment.this, true, GlideEngine.getInstance()).start(0);
                 }
             });
 

@@ -15,6 +15,8 @@ public class Constants {
     //key的常量
     public class Key {
         //证件-拍摄类型标记
+        public final static String PUT_CERTIFICATE_TYPE = "keyOfCertificateTypePut";
+        //证件-拍摄类型标记
         public final static String RESULT_CERTIFICATE_TYPE = "keyOfCertificateTypeResult";
         //证件-图片路径标记
         public final static String RESULT_CERTIFICATE_PATH = "keyOfCertificatePathResult";

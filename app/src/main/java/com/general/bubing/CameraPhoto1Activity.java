@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bubing.camera.CameraPhotoTools;
+import com.bubing.camera.TakePhotoImpl;
 import com.bubing.camera.callback.PuzzleCallback;
 import com.bubing.camera.callback.SelectCallback;
 import com.bubing.camera.constant.Constants;
@@ -50,7 +50,8 @@ import androidx.recyclerview.widget.SnapHelper;
  * @Date: 2020-05-09 21:19
  */
 public class CameraPhoto1Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    public static final int REQUEST_CAMERA = 0x02;
+    public static final int REQUEST_ALBUM = 0x03;
     /**
      * 选择的图片集
      */
@@ -143,32 +144,32 @@ public class CameraPhoto1Activity extends AppCompatActivity implements Navigatio
         int id = item.getItemId();
         switch (id) {
             case R.id.camera://单独使用相机
-                CameraPhotoTools.createCamera(this)
+                TakePhotoImpl.createCamera(this)
                         .setCropOptions(getCropOptions())
                         .start(101);
                 break;
 
             case R.id.album_single://相册单选，无相机功能
-                CameraPhotoTools.createAlbum(this, false, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, false, GlideEngine.getInstance())
                         .setCropOptions(getCropOptions())
                         .start(101);
                 break;
 
             case R.id.album_multi://相册多选，无相机功能
-                CameraPhotoTools.createAlbum(this, false, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, false, GlideEngine.getInstance())
                         .setCropOptions(getCropOptions())
                         .setCount(9)
                         .start(101);
                 break;
 
             case R.id.album_camera_single://相册单选，有相机功能
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCropOptions(getCropOptions())
                         .start(101);
                 break;
 
             case R.id.album_camera_multi://相册多选，有相机功能
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCount(22)
                         .start(new SelectCallback() {
                             @Override
@@ -189,7 +190,7 @@ public class CameraPhoto1Activity extends AppCompatActivity implements Navigatio
                 initAdViews();
 
                 //启动方法，装载广告view
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCount(9)
                         .setCameraLocation(Setting.LIST_FIRST)
                         .setAdView(photosAdView, photosAdLoaded, albumItemsAdView, albumItemsAdLoaded)
@@ -198,7 +199,7 @@ public class CameraPhoto1Activity extends AppCompatActivity implements Navigatio
                 break;
 
             case R.id.album_size://只显示限制尺寸或限制文件大小以上的图片
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCount(9)
                         .setMinWidth(500)
                         .setMinHeight(500)
@@ -207,7 +208,7 @@ public class CameraPhoto1Activity extends AppCompatActivity implements Navigatio
                 break;
 
             case R.id.album_original_usable://显示原图按钮，并且默认选中，按钮可用
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCount(9)
                         .setOriginalMenu(true, true, null)
                         .start(101);
@@ -215,14 +216,14 @@ public class CameraPhoto1Activity extends AppCompatActivity implements Navigatio
 
             case R.id.album_original_unusable://显示原图按钮，并且默认不选中，按钮不可用。使用场景举例：仅VIP可以上传原图
                 boolean isVip = false;//假设获取用户信息发现该用户不是vip
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCount(9)
                         .setOriginalMenu(false, isVip, "该功能为VIP会员特权功能")
                         .start(101);
                 break;
 
             case R.id.album_has_video_gif://相册中显示视频和gif图
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCount(9)
                         .setVideo(true)
                         .setGif(true)
@@ -230,14 +231,14 @@ public class CameraPhoto1Activity extends AppCompatActivity implements Navigatio
                 break;
 
             case R.id.album_only_video://相册中只选择视频(相册只有视频 会禁用相机和拼图)
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCount(9)
                         .filter(Constants.Type.VIDEO)
                         .start(101);
                 break;
 
             case R.id.album_no_menu://相册中不显示底部的编辑图标按钮
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCount(9)
                         .setPuzzleMenu(false)
                         .setCleanMenu(false)
@@ -245,7 +246,7 @@ public class CameraPhoto1Activity extends AppCompatActivity implements Navigatio
                 break;
 
             case R.id.album_selected://相册中包含默认勾选图片
-                CameraPhotoTools.createAlbum(this, true, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setPuzzleMenu(false)
                         .setCount(9)
                         .setSelectedPhotos(PhotoUtils.getPhotos(CameraPhoto1Activity.this, selectedPhotoList, ImageType.OTHER))
@@ -275,7 +276,7 @@ public class CameraPhoto1Activity extends AppCompatActivity implements Navigatio
                 break;
 
             case R.id.puzzle:
-                CameraPhotoTools.createAlbum(this, false, GlideEngine.getInstance())
+                TakePhotoImpl.createAlbum(this, false, GlideEngine.getInstance())
                         .setCount(9)
                         .setPuzzleMenu(false)
                         .start(new SelectCallback() {

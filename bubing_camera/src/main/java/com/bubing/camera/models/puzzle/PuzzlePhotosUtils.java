@@ -6,7 +6,7 @@ import android.app.Activity;
 import com.bubing.camera.callback.PuzzleCallback;
 import com.bubing.camera.engine.ImageEngine;
 import com.bubing.camera.models.album.entity.Photo;
-import com.bubing.camera.result.EasyResult;
+import com.bubing.camera.result.TakeResult;
 import com.bubing.camera.ui.PuzzleActivity;
 
 import java.util.ArrayList;
@@ -43,6 +43,6 @@ public class PuzzlePhotosUtils {
 
     public static void startPuzzleWithPhotos(FragmentActivity act, ArrayList<Photo> photos, String puzzleSaveDirPath, String puzzleSaveNamePrefix, boolean replaceCustom, @NonNull ImageEngine imageEngine, PuzzleCallback callback) {
         act.setResult(Activity.RESULT_OK);
-        EasyResult.get(act).startPuzzleWithPhotos(photos, puzzleSaveDirPath, puzzleSaveNamePrefix, replaceCustom, imageEngine, callback);
+        TakeResult.get(act).startPuzzleWithPhotos(photos, puzzleSaveDirPath, puzzleSaveNamePrefix, replaceCustom, imageEngine, callback);
     }
 }

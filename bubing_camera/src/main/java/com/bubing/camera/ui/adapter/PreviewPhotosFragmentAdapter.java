@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bubing.camera.R;
 import com.bubing.camera.constant.Constants;
-import com.bubing.camera.result.Result;
+import com.bubing.camera.result.ResultStorage;
 import com.bubing.camera.setting.Setting;
 import com.bubing.camera.utils.media.DurationUtils;
 import com.bubing.camera.widget.PressedImageView;
@@ -41,10 +41,10 @@ public class PreviewPhotosFragmentAdapter extends RecyclerView.Adapter<PreviewPh
     @Override
     public void onBindViewHolder(PreviewPhotoVH holder, int position) {
         final int p = position;
-        String path = Result.getPhotoPath(position);
-        String type = Result.getPhotoType(position);
-        Uri uri = Result.getPhotoUri(position);
-        long duration = Result.getPhotoDuration(position);
+        String path = ResultStorage.getPhotoPath(position);
+        String type = ResultStorage.getPhotoType(position);
+        Uri uri = ResultStorage.getPhotoUri(position);
+        long duration = ResultStorage.getPhotoDuration(position);
 
         final boolean isGif = path.endsWith(Constants.Type.GIF) || type.endsWith(Constants.Type.GIF);
         if (Setting.showGif && isGif) {
@@ -75,7 +75,7 @@ public class PreviewPhotosFragmentAdapter extends RecyclerView.Adapter<PreviewPh
 
     @Override
     public int getItemCount() {
-        return Result.count();
+        return ResultStorage.count();
     }
 
     public void setChecked(int position) {

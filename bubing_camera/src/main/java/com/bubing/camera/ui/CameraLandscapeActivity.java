@@ -16,9 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.bubing.camera.constant.DirectionMode;
 import com.bubing.camera.R;
 import com.bubing.camera.constant.Constants;
+import com.bubing.camera.constant.StartupType;
 import com.bubing.camera.utils.BubingLog;
 import com.bubing.camera.utils.CameraUtils;
 import com.bubing.camera.utils.ImageUtils;
@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 /**
  * @ClassName: CameraLandscapeActivity
@@ -43,16 +44,34 @@ import androidx.core.app.ActivityCompat;
 public class CameraLandscapeActivity extends Activity implements View.OnClickListener {
     private static final String TAG = CameraLandscapeActivity.class.getSimpleName();
 
-    private DirectionMode mDirectionMode;//拍摄类型
+    public static void start(Activity activity, StartupType startupType, int requestCode) {
+        Intent intent = new Intent(activity, CameraLandscapeActivity.class);
+        intent.putExtra(Constants.Key.PUT_CERTIFICATE_TYPE, startupType.getValue());
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    public static void start(android.app.Fragment fragment, StartupType startupType, int requestCode) {
+        Intent intent = new Intent(fragment.getActivity(), CameraLandscapeActivity.class);
+        intent.putExtra(Constants.Key.PUT_CERTIFICATE_TYPE, startupType.getValue());
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
+    public static void start(Fragment fragment, StartupType startupType, int requestCode) {
+        Intent intent = new Intent(fragment.getContext(), CameraLandscapeActivity.class);
+        intent.putExtra(Constants.Key.PUT_CERTIFICATE_TYPE, startupType.getValue());
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
+    private StartupType mStartupType;//启动模式-拍摄证件方向
     private boolean isToast = true;//是否弹吐司，为了保证for循环只弹一次
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int takeType = getIntent().getIntExtra(Constants.Key.RESULT_CERTIFICATE_TYPE, 0);
-        mDirectionMode = DirectionMode.valueOf(takeType);
-        BubingLog.d(TAG, "initPermissions takeType: " + takeType + " mDirectionMode：" + mDirectionMode);
-        if (mDirectionMode != null) {
+        int takeType = getIntent().getIntExtra(Constants.Key.PUT_CERTIFICATE_TYPE, 0);
+        mStartupType = StartupType.valueOf(takeType);
+        BubingLog.d(TAG, "initPermissions takeType: " + takeType + " mStartupType：" + mStartupType);
+        if (mStartupType != null) {
             setContentView(R.layout.activity_camera_landscape);
 
             /*动态请求需要的权限*/
@@ -113,7 +132,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
         //根据screenMinSize，计算出cameraPreview的较宽的一边，长宽比为标准的16:9
         float maxSize = screenMinSize / 9.0f * 16.0f;
         RelativeLayout.LayoutParams layoutParams;
-        if (DirectionMode.MODE_COMPANY_PORTRAIT == mDirectionMode)
+        if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType)
             layoutParams = new RelativeLayout.LayoutParams((int) screenMinSize, (int) maxSize);
         else
             layoutParams = new RelativeLayout.LayoutParams((int) maxSize, (int) screenMinSize);
@@ -126,14 +145,14 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
         float width = 0;
         float height = 0;
         LinearLayout.LayoutParams params;
-        if (DirectionMode.MODE_COMPANY_PORTRAIT == mDirectionMode) {
+        if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType) {
             width = (int) (screenMinSize * 0.8);
             height = (int) (width * 43.0f / 30.0f);
             params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) height);
             mCameraCropContainerLayout.setLayoutParams(params);
             params = new LinearLayout.LayoutParams((int) width, (int) height);
             mCameraCropImage.setLayoutParams(params);
-        } else if (DirectionMode.MODE_COMPANY_LANDSCAPE == mDirectionMode) {
+        } else if (StartupType.CAMERA_COMPANY_LANDSCAPE == mStartupType) {
             height = (int) (screenMinSize * 0.8);
             width = (int) (height * 43.0f / 30.0f);
             params = new LinearLayout.LayoutParams((int) width, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -148,13 +167,13 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
             params = new LinearLayout.LayoutParams((int) width, (int) height);
             mCameraCropImage.setLayoutParams(params);
         }
-        if (DirectionMode.MODE_IDCARD_FRONT == mDirectionMode) {
+        if (StartupType.CAMERA_IDCARD_FRONT == mStartupType) {
             mCameraCropImage.setImageResource(R.drawable.camera_idcard_front);
-        } else if (DirectionMode.MODE_IDCARD_BACK == mDirectionMode) {
+        } else if (StartupType.CAMERA_IDCARD_BACK == mStartupType) {
             mCameraCropImage.setImageResource(R.drawable.camera_idcard_back);
-        } else if (DirectionMode.MODE_COMPANY_PORTRAIT == mDirectionMode) {
+        } else if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType) {
             mCameraCropImage.setImageResource(R.drawable.camera_company_portrait);
-        } else if (DirectionMode.MODE_COMPANY_LANDSCAPE == mDirectionMode) {
+        } else if (StartupType.CAMERA_COMPANY_LANDSCAPE == mStartupType) {
             mCameraCropImage.setImageResource(R.drawable.camera_company_landscape);
         }
 
@@ -224,7 +243,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
 
                             //计算裁剪位置
                             float left, top, right, bottom;
-                            if (DirectionMode.MODE_COMPANY_PORTRAIT == mDirectionMode) {
+                            if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType) {
                                 left = (float) mCameraCropImage.getLeft() / (float) mCameraPreview.getWidth();
                                 top = ((float) mCameraCropContainerLayout.getTop() - (float) mCameraPreview.getTop()) / (float) mCameraPreview.getHeight();
                                 right = (float) mCameraCropImage.getRight() / (float) mCameraPreview.getWidth();
@@ -293,7 +312,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
 
                             //计算裁剪位置
                             float left, top, right, bottom;
-                            if (DirectionMode.MODE_COMPANY_PORTRAIT == mDirectionMode) {
+                            if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType) {
                                 left = (float) mCameraCropImage.getLeft() / (float) mCameraPreview.getWidth();
                                 top = ((float) mCameraCropContainerLayout.getTop() - (float) mCameraPreview.getTop()) / (float) mCameraPreview.getHeight();
                                 right = (float) mCameraCropImage.getRight() / (float) mCameraPreview.getWidth();
@@ -345,13 +364,13 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
      * @return 拍摄图片原始文件
      */
     private File getOriginalFile() {
-        if (DirectionMode.MODE_IDCARD_FRONT == mDirectionMode) {
+        if (StartupType.CAMERA_IDCARD_FRONT == mStartupType) {
             return new File(getExternalCacheDir(), "idCardFront.jpg");
-        } else if (DirectionMode.MODE_IDCARD_BACK == mDirectionMode) {
+        } else if (StartupType.CAMERA_IDCARD_BACK == mStartupType) {
             return new File(getExternalCacheDir(), "idCardBack.jpg");
-        } else if (DirectionMode.MODE_COMPANY_PORTRAIT == mDirectionMode) {
+        } else if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType) {
             return new File(getExternalCacheDir(), "companyInfo.jpg");
-        } else if (DirectionMode.MODE_COMPANY_LANDSCAPE == mDirectionMode) {
+        } else if (StartupType.CAMERA_COMPANY_LANDSCAPE == mStartupType) {
             return new File(getExternalCacheDir(), "companyInfo.jpg");
         }
         return new File(getExternalCacheDir(), "picture.jpg");
@@ -361,13 +380,13 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
      * @return 拍摄图片裁剪文件
      */
     private File getCropFile() {
-        if (DirectionMode.MODE_IDCARD_FRONT == mDirectionMode) {
+        if (StartupType.CAMERA_IDCARD_FRONT == mStartupType) {
             return new File(getExternalCacheDir(), "idCardFrontCrop.jpg");
-        } else if (DirectionMode.MODE_IDCARD_BACK == mDirectionMode) {
+        } else if (StartupType.CAMERA_IDCARD_BACK == mStartupType) {
             return new File(getExternalCacheDir(), "idCardBackCrop.jpg");
-        } else if (DirectionMode.MODE_COMPANY_PORTRAIT == mDirectionMode) {
+        } else if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType) {
             return new File(getExternalCacheDir(), "companyInfoCrop.jpg");
-        } else if (DirectionMode.MODE_COMPANY_LANDSCAPE == mDirectionMode) {
+        } else if (StartupType.CAMERA_COMPANY_LANDSCAPE == mStartupType) {
             return new File(getExternalCacheDir(), "companyInfoCrop.jpg");
         }
         return new File(getExternalCacheDir(), "pictureCrop.jpg");
@@ -378,6 +397,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
      */
     private void confirm() {
         Intent intent = new Intent();
+        intent.putExtra(Constants.Key.RESULT_CERTIFICATE_TYPE, mStartupType.getValue());
         intent.putExtra(Constants.Key.RESULT_CERTIFICATE_PATH, getCropFile().getPath());
         setResult(RESULT_OK, intent);
         finish();

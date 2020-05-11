@@ -17,8 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bubing.camera.CameraPhotoTools;
 import com.bubing.camera.R;
+import com.bubing.camera.TakePhotoImpl;
 import com.bubing.camera.constant.Constants;
 import com.bubing.camera.engine.ImageEngine;
 import com.bubing.camera.models.album.entity.Photo;
@@ -340,7 +340,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
             degreeSeekBar.setVisibility(View.GONE);
             toggleIvMenu(R.id.iv_replace);
             if (null == toClass) {
-                CameraPhotoTools.createAlbum(this, true, Setting.imageEngine).setCount(1).start(Constants.Code.REQUEST_PUZZLE_PHOTO);
+                TakePhotoImpl.createAlbum(this, true, Setting.imageEngine).setCount(1).start(Constants.Code.REQUEST_PUZZLE_PHOTO);
             } else {
 //                Intent intent = new Intent(this, toClass.get());
 //                startActivityForResult(intent, Constants.Code.REQUEST_PUZZLE_PHOTO);

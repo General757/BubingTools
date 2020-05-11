@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bubing.camera.R;
 import com.bubing.camera.constant.Constants;
 import com.bubing.camera.models.album.entity.Photo;
-import com.bubing.camera.result.Result;
+import com.bubing.camera.result.ResultStorage;
 import com.bubing.camera.setting.Setting;
 import com.bubing.camera.models.ad.AdViewHolder;
 import com.bubing.camera.utils.media.DurationUtils;
@@ -48,12 +48,12 @@ public class PhotosAdapter extends RecyclerView.Adapter {
         this.dataList = dataList;
         this.listener = listener;
         this.mInflater = LayoutInflater.from(cxt);
-        this.unable = Result.count() == Setting.count;
+        this.unable = ResultStorage.count() == Setting.count;
         this.isSingle = Setting.count == 1;
     }
 
     public void change() {
-        unable = Result.count() == Setting.count;
+        unable = ResultStorage.count() == Setting.count;
         notifyDataSetChanged();
     }
 
@@ -121,7 +121,7 @@ public class PhotosAdapter extends RecyclerView.Adapter {
                     }
                     if (unable) {
                         if (item.selected) {
-                            Result.removePhoto(item);
+                            ResultStorage.removePhoto(item);
                             if (unable) {
                                 unable = false;
                             }
@@ -134,20 +134,20 @@ public class PhotosAdapter extends RecyclerView.Adapter {
                     }
                     item.selected = !item.selected;
                     if (item.selected) {
-                        int res = Result.addPhoto(item);
+                        int res = ResultStorage.addPhoto(item);
                         if (res != 0) {
                             listener.onSelectorOutOfMax(res);
                             item.selected = false;
                             return;
                         }
                         ((PhotoViewHolder) holder).tvSelector.setBackgroundResource(R.drawable.bg_select_true_easy_photos);
-                        ((PhotoViewHolder) holder).tvSelector.setText(String.valueOf(Result.count()));
-                        if (Result.count() == Setting.count) {
+                        ((PhotoViewHolder) holder).tvSelector.setText(String.valueOf(ResultStorage.count()));
+                        if (ResultStorage.count() == Setting.count) {
                             unable = true;
                             notifyDataSetChanged();
                         }
                     } else {
-                        Result.removePhoto(item);
+                        ResultStorage.removePhoto(item);
                         if (unable) {
                             unable = false;
                         }
@@ -203,18 +203,18 @@ public class PhotosAdapter extends RecyclerView.Adapter {
     }
 
     private void singleSelector(Photo photo, int position) {
-        if (!Result.isEmpty()) {
-            if (Result.getPhotoPath(0).equals(photo.path)) {
-                Result.removePhoto(photo);
+        if (!ResultStorage.isEmpty()) {
+            if (ResultStorage.getPhotoPath(0).equals(photo.path)) {
+                ResultStorage.removePhoto(photo);
                 notifyItemChanged(position);
             } else {
-                Result.removePhoto(0);
-                Result.addPhoto(photo);
+                ResultStorage.removePhoto(0);
+                ResultStorage.addPhoto(photo);
                 notifyItemChanged(singlePosition);
                 notifyItemChanged(position);
             }
         } else {
-            Result.addPhoto(photo);
+            ResultStorage.addPhoto(photo);
             notifyItemChanged(position);
         }
         listener.onSelectorChanged();
@@ -222,7 +222,7 @@ public class PhotosAdapter extends RecyclerView.Adapter {
 
     private void updateSelector(TextView tvSelector, boolean selected, Photo photo, int position) {
         if (selected) {
-            String number = Result.getSelectorNumber(photo);
+            String number = ResultStorage.getSelectorNumber(photo);
             if (number.equals("0")) {
                 tvSelector.setBackgroundResource(R.drawable.bg_select_false_easy_photos);
                 tvSelector.setText(null);

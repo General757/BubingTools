@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -31,10 +30,11 @@ import android.widget.Toast;
 
 import com.bubing.camera.R;
 import com.bubing.camera.constant.Constants;
+import com.bubing.camera.constant.ImageType;
 import com.bubing.camera.exception.BException;
 import com.bubing.camera.exception.BExceptionType;
 import com.bubing.camera.models.ContextWrap;
-import com.bubing.camera.constant.ImageType;
+import com.bubing.camera.models.ResultPhoto;
 import com.bubing.camera.models.ad.AdListener;
 import com.bubing.camera.models.ad.AdUtils;
 import com.bubing.camera.models.album.AlbumModel;
@@ -44,8 +44,7 @@ import com.bubing.camera.models.compress.CompressImageImpl;
 import com.bubing.camera.models.crop.CropOptions;
 import com.bubing.camera.models.crop.CropUtils;
 import com.bubing.camera.models.crop.MultipleCrop;
-import com.bubing.camera.models.ResultPhoto;
-import com.bubing.camera.result.Result;
+import com.bubing.camera.result.ResultStorage;
 import com.bubing.camera.setting.Setting;
 import com.bubing.camera.ui.adapter.AlbumItemsAdapter;
 import com.bubing.camera.ui.adapter.PhotosAdapter;
@@ -81,6 +80,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -122,12 +122,12 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         activity.startActivityForResult(intent, requestCode);
     }
 
-    public static void start(Fragment fragment, int requestCode) {
+    public static void start(android.app.Fragment fragment, int requestCode) {
         Intent intent = new Intent(fragment.getActivity(), EasyPhotosActivity.class);
         fragment.startActivityForResult(intent, requestCode);
     }
 
-    public static void start(androidx.fragment.app.Fragment fragment, int requestCode) {
+    public static void start(Fragment fragment, int requestCode) {
         Intent intent = new Intent(fragment.getContext(), EasyPhotosActivity.class);
         fragment.startActivityForResult(intent, requestCode);
     }
@@ -325,11 +325,11 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         } else if (R.id.tv_done == id) {//完成
             done();
         } else if (R.id.tv_clear == id) {//清空
-            if (Result.isEmpty()) {
+            if (ResultStorage.isEmpty()) {
                 processSecondMenu();
                 return;
             }
-            Result.removeAll();
+            ResultStorage.removeAll();
             photosAdapter.change();
             shouldShowMenuDone();
             processSecondMenu();
@@ -371,7 +371,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
     }
 
     private void done() {//点击完成按钮
-        for (Photo photo : Result.photos) {
+        for (Photo photo : ResultStorage.photos) {
             try {
                 if (photo.width == 0 || photo.height == 0)
                     BitmapUtils.calculateLocalImageSizeThroughBitmapOptions(this, photo);
@@ -388,7 +388,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
 
         if (Setting.isCrop()) {
             try {
-                onMultipleCrop(MultipleCrop.of(this, Result.photos, ImageType.OTHER), Setting.cropOptions);
+                onMultipleCrop(MultipleCrop.of(this, ResultStorage.photos, ImageType.OTHER), Setting.cropOptions);
             } catch (BException e) {
                 onActivityResultAlbum();
                 e.printStackTrace();
@@ -475,7 +475,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
     }
 
     private void shouldShowMenuDone() {//完成按钮展示更新
-        if (Result.isEmpty()) {
+        if (ResultStorage.isEmpty()) {
             if (View.VISIBLE == tvDone.getVisibility()) {
                 ScaleAnimation scaleHide = new ScaleAnimation(1f, 0f, 1f, 0f);
                 scaleHide.setDuration(200);
@@ -492,7 +492,7 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
             tvDone.setVisibility(View.VISIBLE);
             tvPreview.setVisibility(View.VISIBLE);
         }
-        tvDone.setText(getString(R.string.selector_action_done_easy_photos, Result.count(),
+        tvDone.setText(getString(R.string.selector_action_done_easy_photos, ResultStorage.count(),
                 Setting.count));
     }
 
@@ -861,13 +861,13 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
         albumItemsAdapter.notifyDataSetChanged();
 
         if (Setting.count == 1) {
-            Result.clear();
-            onSelectorOutOfMax(Result.addPhoto(photo));
+            ResultStorage.clear();
+            onSelectorOutOfMax(ResultStorage.addPhoto(photo));
         } else {
-            if (Result.count() >= Setting.count) {
+            if (ResultStorage.count() >= Setting.count) {
                 onSelectorOutOfMax(null);
             } else {
-                onSelectorOutOfMax(Result.addPhoto(photo));
+                onSelectorOutOfMax(ResultStorage.addPhoto(photo));
             }
         }
         rvAlbumItems.scrollToPosition(0);
@@ -946,9 +946,9 @@ public class EasyPhotosActivity extends AppCompatActivity implements AlbumItemsA
 
     private void onActivityResultAlbum() {//相册回调
         Intent intent = new Intent();
-        Result.processOriginal();
+        ResultStorage.processOriginal();
         ArrayList<ResultPhoto> resultPhotos = new ArrayList<>();
-        for (Photo photo : Result.photos) {
+        for (Photo photo : ResultStorage.photos) {
             resultPhotos.add(PhotoUtils.getResultPhoto(this, photo, ImageType.CAMERA));
         }
         intent.putParcelableArrayListExtra(Constants.Key.RESULT_PHOTOS, resultPhotos);

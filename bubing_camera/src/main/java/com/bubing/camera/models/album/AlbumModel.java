@@ -13,7 +13,7 @@ import com.bubing.camera.constant.Constants;
 import com.bubing.camera.models.album.entity.Album;
 import com.bubing.camera.models.album.entity.AlbumItem;
 import com.bubing.camera.models.album.entity.Photo;
-import com.bubing.camera.result.Result;
+import com.bubing.camera.result.ResultStorage;
 import com.bubing.camera.setting.Setting;
 import com.bubing.camera.utils.StringUtils;
 
@@ -184,7 +184,7 @@ public class AlbumModel {
                     for (Photo selectedPhoto : Setting.selectedPhotos) {
                         if (path.equals(selectedPhoto.path)) {
                             imageItem.selectedOriginal = Setting.selectedOriginal;
-                            Result.addPhoto(imageItem);
+                            ResultStorage.addPhoto(imageItem);
                         }
                     }
                 }

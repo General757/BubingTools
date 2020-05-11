@@ -5,24 +5,24 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 /**
- * @ClassName: EasyResult
+ * @ClassName: TakeResult
  * @Description: java类作用描述
  * @Author: bubing
  * @Date: 2020-05-09 15:24
  */
-public class EasyResult {
-    private static final String TAG = EasyResult.class.getName();
+public class TakeResult {
+    private static final String TAG = TakeResult.class.getName();
 
-    private EasyResult() {
+    private TakeResult() {
 
     }
 
     public static HolderFragment get(FragmentActivity activity) {
-        return new EasyResult().getHolderFragment(activity.getSupportFragmentManager());
+        return new TakeResult().getHolderFragment(activity.getSupportFragmentManager());
     }
 
     public static HolderFragment get(Fragment fragment) {
-        return new EasyResult().getHolderFragment(fragment.getChildFragmentManager());
+        return new TakeResult().getHolderFragment(fragment.getChildFragmentManager());
     }
 
     private HolderFragment getHolderFragment(FragmentManager fragmentManager) {
