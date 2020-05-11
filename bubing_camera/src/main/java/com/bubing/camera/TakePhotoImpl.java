@@ -17,7 +17,7 @@ import com.bubing.camera.result.TakeResult;
 import com.bubing.camera.setting.Setting;
 import com.bubing.camera.ui.CameraLandscapeActivity;
 import com.bubing.camera.ui.CameraPortraitActivity;
-import com.bubing.camera.ui.EasyPhotosActivity;
+import com.bubing.camera.ui.CameraAlbumActivity;
 import com.bubing.camera.utils.UriUtils;
 
 import java.io.File;
@@ -228,15 +228,15 @@ public class TakePhotoImpl {
      */
     private void launchActivity(int requestCode) {
         if (null != mActivity && null != mActivity.get()) {
-            EasyPhotosActivity.start(mActivity.get(), requestCode);
+            CameraAlbumActivity.start(mActivity.get(), requestCode);
             return;
         }
         if (null != mFragment && null != mFragment.get()) {
-            EasyPhotosActivity.start(mFragment.get(), requestCode);
+            CameraAlbumActivity.start(mFragment.get(), requestCode);
             return;
         }
         if (null != mFragmentV && null != mFragmentV.get()) {
-            EasyPhotosActivity.start(mFragmentV.get(), requestCode);
+            CameraAlbumActivity.start(mFragmentV.get(), requestCode);
         }
     }
 

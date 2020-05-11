@@ -29,7 +29,7 @@ public class PuzzleAdapter extends RecyclerView.Adapter<PuzzleAdapter.PuzzleView
 
     @Override
     public PuzzleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_puzzle_easy_photos, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_puzzle, parent, false);
         return new PuzzleViewHolder(itemView);
     }
 

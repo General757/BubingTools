@@ -38,7 +38,7 @@ public class PuzzleSelectorAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PhotoViewHolder(mInflater.inflate(R.layout.item_puzzle_selector_easy_photos, parent, false));
+        return new PhotoViewHolder(mInflater.inflate(R.layout.item_puzzle_selector, parent, false));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class PuzzleSelectorAdapter extends RecyclerView.Adapter {
         final boolean isGif = path.endsWith(Constants.Type.GIF) || type.endsWith(Constants.Type.GIF);
         if (Setting.showGif && isGif) {
             Setting.imageEngine.loadGifAsBitmap(((PhotoViewHolder) holder).ivPhoto.getContext(), uri, ((PhotoViewHolder) holder).ivPhoto);
-            ((PhotoViewHolder) holder).tvType.setText(R.string.gif_easy_photos);
+            ((PhotoViewHolder) holder).tvType.setText(R.string.text_gif);
             ((PhotoViewHolder) holder).tvType.setVisibility(View.VISIBLE);
         } else if (Setting.showVideo && type.contains(Constants.Type.VIDEO)) {
             Setting.imageEngine.loadPhoto(((PhotoViewHolder) holder).ivPhoto.getContext(), uri, ((PhotoViewHolder) holder).ivPhoto);

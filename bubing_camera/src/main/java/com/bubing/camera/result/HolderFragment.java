@@ -9,7 +9,7 @@ import com.bubing.camera.callback.SelectCallback;
 import com.bubing.camera.constant.Constants;
 import com.bubing.camera.engine.ImageEngine;
 import com.bubing.camera.models.album.entity.Photo;
-import com.bubing.camera.ui.EasyPhotosActivity;
+import com.bubing.camera.ui.CameraAlbumActivity;
 import com.bubing.camera.ui.PuzzleActivity;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class HolderFragment extends Fragment {
 
     public void startEasyPhoto(SelectCallback callback) {
         mSelectCallback = callback;
-        EasyPhotosActivity.start(this, HOLDER_SELECT_REQUEST_CODE);
+        CameraAlbumActivity.start(this, HOLDER_SELECT_REQUEST_CODE);
     }
 
     public void startPuzzleWithPhotos(ArrayList<Photo> photos, String puzzleSaveDirPath, String puzzleSaveNamePrefix, boolean replaceCustom, @NonNull ImageEngine imageEngine, PuzzleCallback callback) {

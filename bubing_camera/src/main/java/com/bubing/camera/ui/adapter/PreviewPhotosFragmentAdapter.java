@@ -35,7 +35,7 @@ public class PreviewPhotosFragmentAdapter extends RecyclerView.Adapter<PreviewPh
 
     @Override
     public PreviewPhotoVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PreviewPhotoVH(inflater.inflate(R.layout.item_preview_selected_photos_easy_photos, parent, false));
+        return new PreviewPhotoVH(inflater.inflate(R.layout.item_fragment_preview_photos, parent, false));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PreviewPhotosFragmentAdapter extends RecyclerView.Adapter<PreviewPh
         final boolean isGif = path.endsWith(Constants.Type.GIF) || type.endsWith(Constants.Type.GIF);
         if (Setting.showGif && isGif) {
             Setting.imageEngine.loadGifAsBitmap(holder.ivPhoto.getContext(), uri, holder.ivPhoto);
-            holder.tvType.setText(R.string.gif_easy_photos);
+            holder.tvType.setText(R.string.text_gif);
             holder.tvType.setVisibility(View.VISIBLE);
         } else if (Setting.showVideo && type.contains(Constants.Type.VIDEO)) {
             Setting.imageEngine.loadPhoto(holder.ivPhoto.getContext(), uri, holder.ivPhoto);

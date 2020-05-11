@@ -126,9 +126,9 @@ public class BitmapSticker extends View {
     }
 
     private void initButtons() {
-        btDelete = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_delete_easy_photos);
-        btMirror = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_mirror_easy_photos);
-        btScale = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_controller_easy_photos);
+        btDelete = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_photos_delete);
+        btMirror = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_photos_mirror);
+        btScale = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_photos_controller);
 //        btRotate = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_rotate);
         btSize = btDelete.getWidth();
     }

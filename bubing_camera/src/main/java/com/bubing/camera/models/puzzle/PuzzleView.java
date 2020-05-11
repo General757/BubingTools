@@ -12,11 +12,11 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.bubing.camera.R;
+import com.bubing.camera.utils.BubingLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,9 +100,9 @@ public class PuzzleView extends View {
     private void init(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.PuzzleView);
         lineSize = ta.getInt(R.styleable.PuzzleView_line_size, 4);
-        lineColor = ta.getColor(R.styleable.PuzzleView_line_color, ContextCompat.getColor(getContext(), R.color.easy_photos_fg_primary));
-        selectedLineColor = ta.getColor(R.styleable.PuzzleView_selected_line_color, ContextCompat.getColor(getContext(), R.color.easy_photos_fg_accent));
-        handleBarColor = ta.getColor(R.styleable.PuzzleView_handle_bar_color, ContextCompat.getColor(getContext(), R.color.easy_photos_fg_accent));
+        lineColor = ta.getColor(R.styleable.PuzzleView_line_color, ContextCompat.getColor(getContext(), R.color.fg_primary));
+        selectedLineColor = ta.getColor(R.styleable.PuzzleView_selected_line_color, ContextCompat.getColor(getContext(), R.color.fg_accent));
+        handleBarColor = ta.getColor(R.styleable.PuzzleView_handle_bar_color, ContextCompat.getColor(getContext(), R.color.fg_accent));
         piecePadding = ta.getDimensionPixelSize(R.styleable.PuzzleView_piece_padding, 0);
         needDrawLine = ta.getBoolean(R.styleable.PuzzleView_need_draw_line, false);
         needDrawOuterLine = ta.getBoolean(R.styleable.PuzzleView_need_draw_outer_line, false);
@@ -626,9 +626,8 @@ public class PuzzleView extends View {
         int position = puzzlePieces.size();
 
         if (position >= puzzleLayout.getAreaCount()) {
-            Log.e(TAG, "addPiece: can not add more. the current puzzle layout can contains "
-                    + puzzleLayout.getAreaCount()
-                    + " puzzle piece.");
+            BubingLog.e(TAG, "addPiece: can not add more. the current puzzle layout can contains "
+                    + puzzleLayout.getAreaCount() + " puzzle piece.");
             return;
         }
 

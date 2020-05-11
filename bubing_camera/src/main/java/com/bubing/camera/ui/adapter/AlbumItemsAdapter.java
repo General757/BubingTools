@@ -55,9 +55,9 @@ public class AlbumItemsAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_AD:
-                return new AdViewHolder(mInflater.inflate(R.layout.item_ad_easy_photos, parent, false));
+                return new AdViewHolder(mInflater.inflate(R.layout.item_photos_ad, parent, false));
             default:
-                return new AlbumItemsViewHolder(mInflater.inflate(R.layout.item_dialog_album_items_easy_photos, parent, false));
+                return new AlbumItemsViewHolder(mInflater.inflate(R.layout.item_album_photos, parent, false));
         }
     }
 

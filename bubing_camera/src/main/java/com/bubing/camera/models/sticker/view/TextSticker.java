@@ -76,7 +76,7 @@ public class TextSticker extends View {
 
         this.text = text;
         if (TextUtils.isEmpty(this.text)) {
-            this.text = context.getString(R.string.text_sticker_hint_easy_photos);
+            this.text = context.getString(R.string.text_sticker_hint);
         }
         path = new Path();
         textLayoutWidth = getResources().getDisplayMetrics().widthPixels / 2;
@@ -132,7 +132,7 @@ public class TextSticker extends View {
         textPaint.setDither(true);
         textPaint.setFilterBitmap(true);
         textPaint.setTypeface(Typeface.DEFAULT_BOLD);
-        textPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.sticker_text_size_easy_photos));
+        textPaint.setTextSize(getResources().getDimensionPixelSize(R.dimen.sticker_text_size));
         textPaint.setColor(Color.WHITE);
 
         bitmapPaint = new Paint();
@@ -168,9 +168,9 @@ public class TextSticker extends View {
     }
 
     private void initButtons() {
-        btDelete = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_delete_easy_photos);
-//        btEditor = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_editor_easy_photos);
-        btController = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_controller_easy_photos);
+        btDelete = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_photos_delete);
+//        btEditor = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_photos_editor);
+        btController = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_photos_controller);
 //        btRotate = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_rotate);
         btSize = btDelete.getWidth();
     }

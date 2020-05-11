@@ -7,13 +7,14 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.os.Build;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.bubing.camera.R;
+import com.bubing.camera.utils.BubingLog;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * @ClassName: DegreeSeekBar
@@ -77,9 +78,9 @@ public class DegreeSeekBar extends View {
     }
 
     private void init() {
-        mPointColor = ContextCompat.getColor(getContext(), R.color.easy_photos_fg_primary);
-        mTextColor = ContextCompat.getColor(getContext(), R.color.easy_photos_fg_primary);
-        mCenterTextColor = ContextCompat.getColor(getContext(), R.color.easy_photos_fg_accent);
+        mPointColor = ContextCompat.getColor(getContext(), R.color.fg_primary);
+        mTextColor = ContextCompat.getColor(getContext(), R.color.fg_primary);
+        mCenterTextColor = ContextCompat.getColor(getContext(), R.color.fg_accent);
 
         mPointPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPointPaint.setStyle(Paint.Style.STROKE);
@@ -278,7 +279,7 @@ public class DegreeSeekBar extends View {
 
     public void setDegreeRange(int min, int max) {
         if (min > max) {
-            Log.e(TAG, "setDegreeRange: error, max must greater than min");
+            BubingLog.e(TAG, "setDegreeRange: error, max must greater than min");
         } else {
             mMinReachableDegrees = min;
             mMaxReachableDegrees = max;

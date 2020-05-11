@@ -1,8 +1,7 @@
 package com.bubing.camera.models.puzzle.template.straight;
 
-import android.util.Log;
-
 import com.bubing.camera.models.puzzle.straight.StraightPuzzleLayout;
+import com.bubing.camera.utils.BubingLog;
 
 /**
  * @ClassName: NumberStraightLayout
@@ -16,7 +15,7 @@ public abstract class NumberStraightLayout extends StraightPuzzleLayout {
 
     public NumberStraightLayout(int theme) {
         if (theme >= getThemeCount()) {
-            Log.e(TAG, "NumberStraightLayout: the most theme count is "
+            BubingLog.e(TAG, "NumberStraightLayout: the most theme count is "
                     + getThemeCount()
                     + " ,you should let theme from 0 to "
                     + (getThemeCount() - 1)

@@ -53,7 +53,7 @@ public class PreviewPhotosAdapter extends RecyclerView.Adapter<PreviewPhotosAdap
     @NonNull
     @Override
     public PreviewPhotosViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PreviewPhotosViewHolder(inflater.inflate(R.layout.item_preview_photo_easy_photos, parent, false));
+        return new PreviewPhotosViewHolder(inflater.inflate(R.layout.item_preview_photos, parent, false));
     }
 
     @Override

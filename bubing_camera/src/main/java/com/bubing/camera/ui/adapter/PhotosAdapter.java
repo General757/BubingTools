@@ -62,11 +62,11 @@ public class PhotosAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_AD:
-                return new AdViewHolder(mInflater.inflate(R.layout.item_ad_easy_photos, parent, false));
+                return new AdViewHolder(mInflater.inflate(R.layout.item_photos_ad, parent, false));
             case TYPE_CAMERA:
-                return new CameraViewHolder(mInflater.inflate(R.layout.item_camera_easy_photos, parent, false));
+                return new CameraViewHolder(mInflater.inflate(R.layout.item_photos_camera, parent, false));
             default:
-                return new PhotoViewHolder(mInflater.inflate(R.layout.item_rv_photos_easy_photos, parent, false));
+                return new PhotoViewHolder(mInflater.inflate(R.layout.item_photos, parent, false));
         }
     }
 
@@ -84,7 +84,7 @@ public class PhotosAdapter extends RecyclerView.Adapter {
             final boolean isGif = path.endsWith(Constants.Type.GIF) || type.endsWith(Constants.Type.GIF);
             if (Setting.showGif && isGif) {
                 Setting.imageEngine.loadGifAsBitmap(((PhotoViewHolder) holder).ivPhoto.getContext(), uri, ((PhotoViewHolder) holder).ivPhoto);
-                ((PhotoViewHolder) holder).tvType.setText(R.string.gif_easy_photos);
+                ((PhotoViewHolder) holder).tvType.setText(R.string.text_gif);
                 ((PhotoViewHolder) holder).tvType.setVisibility(View.VISIBLE);
             } else if (Setting.showVideo && type.contains(Constants.Type.VIDEO)) {
                 Setting.imageEngine.loadPhoto(((PhotoViewHolder) holder).ivPhoto.getContext(), uri, ((PhotoViewHolder) holder).ivPhoto);
@@ -140,7 +140,7 @@ public class PhotosAdapter extends RecyclerView.Adapter {
                             item.selected = false;
                             return;
                         }
-                        ((PhotoViewHolder) holder).tvSelector.setBackgroundResource(R.drawable.bg_select_true_easy_photos);
+                        ((PhotoViewHolder) holder).tvSelector.setBackgroundResource(R.drawable.bg_select_true);
                         ((PhotoViewHolder) holder).tvSelector.setText(String.valueOf(ResultStorage.count()));
                         if (ResultStorage.count() == Setting.count) {
                             unable = true;
@@ -224,21 +224,21 @@ public class PhotosAdapter extends RecyclerView.Adapter {
         if (selected) {
             String number = ResultStorage.getSelectorNumber(photo);
             if (number.equals("0")) {
-                tvSelector.setBackgroundResource(R.drawable.bg_select_false_easy_photos);
+                tvSelector.setBackgroundResource(R.drawable.bg_select_false);
                 tvSelector.setText(null);
                 return;
             }
             tvSelector.setText(number);
-            tvSelector.setBackgroundResource(R.drawable.bg_select_true_easy_photos);
+            tvSelector.setBackgroundResource(R.drawable.bg_select_true);
             if (isSingle) {
                 singlePosition = position;
                 tvSelector.setText("1");
             }
         } else {
             if (unable) {
-                tvSelector.setBackgroundResource(R.drawable.bg_select_false_unable_easy_photos);
+                tvSelector.setBackgroundResource(R.drawable.bg_select_false_unable);
             } else {
-                tvSelector.setBackgroundResource(R.drawable.bg_select_false_easy_photos);
+                tvSelector.setBackgroundResource(R.drawable.bg_select_false);
             }
             tvSelector.setText(null);
         }

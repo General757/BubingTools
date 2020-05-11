@@ -31,16 +31,16 @@ public class TextStickerAdapter extends RecyclerView.Adapter<TextStickerAdapter.
         super();
         this.onItemClickListener = listener;
         this.datas = new ArrayList<>();
-        TextStickerData data = new TextStickerData(cxt.getString(R.string.text_sticker_hint_name_easy_photos), cxt.getString(R.string.text_sticker_hint_easy_photos));
+        TextStickerData data = new TextStickerData(cxt.getString(R.string.text_sticker_hint_name), cxt.getString(R.string.text_sticker_hint));
         this.datas.add(0, data);
-        TextStickerData d = new TextStickerData(cxt.getString(R.string.text_sticker_date_easy_photos), "-1");
+        TextStickerData d = new TextStickerData(cxt.getString(R.string.text_sticker_date), "-1");
         datas.add(d);
         datas.addAll(StickerModel.textDataList);
     }
 
     @Override
     public TextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_text_sticker_easy_photos, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_text_sticker, parent, false);
         return new TextViewHolder(itemView);
     }
 

@@ -21,7 +21,7 @@ public class Constants {
         //证件-图片路径标记
         public final static String RESULT_CERTIFICATE_PATH = "keyOfCertificatePathResult";
 
-        //easyPhotos的返回数据Key
+        //返回数据Key
         public static final String RESULT_PHOTOS = "keyOfEasyPhotosResult";
 
         public static final String RESULT_SELECTED_ORIGINAL = "keyOfEasyPhotosResultSelectedOriginal";

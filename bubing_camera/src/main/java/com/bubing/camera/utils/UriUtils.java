@@ -13,11 +13,9 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.bubing.camera.exception.BException;
 import com.bubing.camera.exception.BExceptionType;
-import com.bubing.camera.setting.Setting;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -115,7 +113,7 @@ public class UriUtils {
                 return cursor.getString(column_index);
             }
         } catch (IllegalArgumentException ex) {
-            Log.i(TAG, String.format(Locale.getDefault(), "getDataColumn: _data - [%s]", ex.getMessage()));
+            BubingLog.i(TAG, String.format(Locale.getDefault(), "getDataColumn: _data - [%s]", ex.getMessage()));
         } finally {
             if (cursor != null)
                 cursor.close();
@@ -280,7 +278,7 @@ public class UriUtils {
      */
     public static String getFilePathWithUri(Uri uri, Activity activity) throws BException {
         if (uri == null) {
-            Log.w(TAG, "uri is null,activity may have been recovered?");
+            BubingLog.w(TAG, "uri is null,activity may have been recovered?");
             throw new BException(BExceptionType.TYPE_URI_NULL);
         }
         File picture = getFileWithUri(uri, activity);
@@ -332,7 +330,7 @@ public class UriUtils {
      */
     public static String getFilePathWithDocumentsUri(Uri uri, Activity activity) throws BException {
         if (uri == null) {
-            Log.e(TAG, "uri is null,activity may have been recovered?");
+            BubingLog.e(TAG, "uri is null,activity may have been recovered?");
             return null;
         }
         if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme()) && uri.getPath().contains("document")) {

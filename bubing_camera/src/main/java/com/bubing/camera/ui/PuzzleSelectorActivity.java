@@ -74,11 +74,11 @@ public class PuzzleSelectorActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_puzzle_selector_easy_photos);
+        setContentView(R.layout.activity_puzzle_selector);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int statusColor = getWindow().getStatusBarColor();
             if (statusColor == Color.TRANSPARENT) {
-                statusColor = ContextCompat.getColor(this, R.color.easy_photos_status_bar);
+                statusColor = ContextCompat.getColor(this, R.color.status_bar);
             }
             if (ColorUtils.isWhiteColor(statusColor)) {
                 SystemUtils.getInstance().setStatusDark(this, true);
@@ -121,7 +121,7 @@ public class PuzzleSelectorActivity extends AppCompatActivity implements View.On
         photoList.addAll(albumModel.getCurrAlbumItemPhotos(0));
         photosAdapter = new PuzzleSelectorAdapter(this, photoList, this);
 
-        int columns = getResources().getInteger(R.integer.photos_columns_easy_photos);
+        int columns = getResources().getInteger(R.integer.photos_columns);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, columns);
         rvPhotos.setLayoutManager(gridLayoutManager);
@@ -237,7 +237,7 @@ public class PuzzleSelectorActivity extends AppCompatActivity implements View.On
     @Override
     public void onPhotoClick(int position) {
         if (selectedPhotos.size() > 8) {
-            Toast.makeText(this, getString(R.string.selector_reach_max_image_hint_easy_photos, 9), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.selector_reach_max_image_hint, 9), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -245,7 +245,7 @@ public class PuzzleSelectorActivity extends AppCompatActivity implements View.On
         previewAdapter.notifyDataSetChanged();
         rvPreview.smoothScrollToPosition(selectedPhotos.size() - 1);
 
-        tvDone.setText(getString(R.string.selector_action_done_easy_photos, selectedPhotos.size(), 9));
+        tvDone.setText(getString(R.string.selector_action_done, selectedPhotos.size(), 9));
         if (selectedPhotos.size() > 1)
             tvDone.setVisibility(View.VISIBLE);
     }
@@ -254,7 +254,7 @@ public class PuzzleSelectorActivity extends AppCompatActivity implements View.On
     public void onDeleteClick(int position) {
         selectedPhotos.remove(position);
         previewAdapter.notifyDataSetChanged();
-        tvDone.setText(getString(R.string.selector_action_done_easy_photos, selectedPhotos.size(), 9));
+        tvDone.setText(getString(R.string.selector_action_done, selectedPhotos.size(), 9));
         if (selectedPhotos.size() < 2)
             tvDone.setVisibility(View.INVISIBLE);
     }
@@ -262,7 +262,7 @@ public class PuzzleSelectorActivity extends AppCompatActivity implements View.On
     private void resetPuzzlePhotos() {
         selectedPhotos.clear();
         previewAdapter.notifyDataSetChanged();
-        tvDone.setText(getString(R.string.selector_action_done_easy_photos, selectedPhotos.size(), 9));
+        tvDone.setText(getString(R.string.selector_action_done, selectedPhotos.size(), 9));
         if (selectedPhotos.size() < 2)
             tvDone.setVisibility(View.INVISIBLE);
     }

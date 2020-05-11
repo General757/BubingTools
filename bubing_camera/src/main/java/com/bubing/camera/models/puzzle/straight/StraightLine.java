@@ -2,9 +2,9 @@ package com.bubing.camera.models.puzzle.straight;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.bubing.camera.models.puzzle.Line;
+import com.bubing.camera.utils.BubingLog;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -41,7 +41,7 @@ class StraightLine implements Line {
         } else if (start.y == end.y) {
             direction = Line.Direction.HORIZONTAL;
         } else {
-            Log.d("StraightLine", "StraightLine: current only support two direction");
+            BubingLog.d("StraightLine", "StraightLine: current only support two direction");
         }
     }
 

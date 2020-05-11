@@ -37,12 +37,12 @@
 
 
         <activity
-            android:name=".ui.EasyPhotosActivity"
+            android:name=".ui.CameraAlbumActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/EasyPhotosTheme" />
         <activity
-            android:name=".ui.PreviewActivity"
+            android:name=".ui.ImagePreviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/EasyPhotosFullscreenTheme" />

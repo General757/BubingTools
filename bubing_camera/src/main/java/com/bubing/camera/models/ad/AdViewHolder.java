@@ -18,6 +18,6 @@ public class AdViewHolder extends RecyclerView.ViewHolder {
 
     public AdViewHolder(View itemView) {
         super(itemView);
-        adFrame = (FrameLayout) itemView.findViewById(R.id.ad_frame_easy_photos);
+        adFrame = (FrameLayout) itemView.findViewById(R.id.ad_frame);
     }
 }

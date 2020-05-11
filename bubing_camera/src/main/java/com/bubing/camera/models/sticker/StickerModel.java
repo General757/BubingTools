@@ -7,13 +7,13 @@ import android.graphics.Canvas;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bubing.camera.models.sticker.view.EditStickerFragment;
 import com.bubing.camera.utils.bitmap.BitmapUtils;
 import com.bubing.camera.utils.bitmap.SaveBitmapCallBack;
 import com.bubing.camera.models.sticker.cache.StickerCache;
 import com.bubing.camera.models.sticker.entity.TextStickerData;
 import com.bubing.camera.models.sticker.listener.OnStickerClickListener;
 import com.bubing.camera.models.sticker.view.BitmapSticker;
-import com.bubing.camera.models.sticker.view.EditFragment;
 import com.bubing.camera.models.sticker.view.TextSticker;
 
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class StickerModel {
 
             @Override
             public void onEditor() {
-                EditFragment.show(fragmentManager, sticker);
+                EditStickerFragment.show(fragmentManager, sticker);
             }
 
             @Override

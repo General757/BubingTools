@@ -161,7 +161,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().setAttributes(attrs);
-        setContentView(R.layout.activity_puzzle_easy_photos);
+        setContentView(R.layout.activity_puzzle);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
@@ -387,13 +387,13 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
             handleSeekBar(FLAG_CONTROL_PADDING, 0, 100, puzzleView.getPiecePadding());
             toggleIvMenu(R.id.iv_padding);
         } else if (R.id.tv_template == id) {
-            tvTemplate.setTextColor(ContextCompat.getColor(this, R.color.easy_photos_fg_accent));
-            tvTextSticker.setTextColor(ContextCompat.getColor(this, R.color.easy_photos_fg_primary));
+            tvTemplate.setTextColor(ContextCompat.getColor(this, R.color.fg_accent));
+            tvTextSticker.setTextColor(ContextCompat.getColor(this, R.color.fg_primary));
 
             rvPuzzleTemplet.setAdapter(puzzleAdapter);
         } else if (R.id.tv_text_sticker == id) {
-            tvTextSticker.setTextColor(ContextCompat.getColor(this, R.color.easy_photos_fg_accent));
-            tvTemplate.setTextColor(ContextCompat.getColor(this, R.color.easy_photos_fg_primary));
+            tvTextSticker.setTextColor(ContextCompat.getColor(this, R.color.fg_accent));
+            tvTemplate.setTextColor(ContextCompat.getColor(this, R.color.fg_primary));
 
             rvPuzzleTemplet.setAdapter(textStickerAdapter);
         } else if (R.id.fab == id) {
@@ -404,10 +404,10 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
     private void processBottomLayout() {
         if (View.VISIBLE == mBottomLayout.getVisibility()) {
             mBottomLayout.setVisibility(View.GONE);
-            fab.setImageResource(R.drawable.ic_arrow_up_easy_photos);
+            fab.setImageResource(R.drawable.ic_arrow_up);
         } else {
             mBottomLayout.setVisibility(View.VISIBLE);
-            fab.setImageResource(R.drawable.ic_arrow_down_easy_photos);
+            fab.setImageResource(R.drawable.ic_arrow_down);
         }
     }
 
@@ -461,7 +461,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
     private void toggleIvMenu(@IdRes int resId) {
         for (ImageView ivMenu : ivMenus) {
             if (ivMenu.getId() == resId) {
-                ivMenu.setColorFilter(ContextCompat.getColor(this, R.color.easy_photos_fg_accent));
+                ivMenu.setColorFilter(ContextCompat.getColor(this, R.color.fg_accent));
             } else {
                 ivMenu.clearColorFilter();
             }
@@ -553,8 +553,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onShouldShow() {
-                Snackbar.make(rvPuzzleTemplet, R.string.permissions_again_easy_photos,
-                        Snackbar.LENGTH_INDEFINITE).setAction("go", new View.OnClickListener() {
+                Snackbar.make(rvPuzzleTemplet, R.string.permissions_again, Snackbar.LENGTH_INDEFINITE).setAction("go", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (PermissionUtil.checkAndRequestPermissionsInActivity(PuzzleActivity.this, getNeedPermissions())) {
@@ -566,8 +565,7 @@ public class PuzzleActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onFailed() {
-                Snackbar.make(rvPuzzleTemplet, R.string.permissions_die_easy_photos,
-                        Snackbar.LENGTH_INDEFINITE).setAction("go", new View.OnClickListener() {
+                Snackbar.make(rvPuzzleTemplet, R.string.permissions_die, Snackbar.LENGTH_INDEFINITE).setAction("go", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         SettingsUtils.startMyApplicationDetailsForResult(PuzzleActivity.this, getPackageName());

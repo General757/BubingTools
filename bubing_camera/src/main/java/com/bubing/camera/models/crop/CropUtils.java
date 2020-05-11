@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.bubing.camera.constant.Constants;
@@ -15,6 +14,7 @@ import com.bubing.camera.exception.BException;
 import com.bubing.camera.exception.BExceptionType;
 import com.bubing.camera.models.ContextWrap;
 import com.bubing.camera.models.IntentWap;
+import com.bubing.camera.utils.BubingLog;
 import com.bubing.camera.utils.IntentUtils;
 import com.soundcloud.android.crop.Crop;
 
@@ -134,7 +134,7 @@ public class CropUtils {
     public static boolean isReturnData() {
         String release = Build.VERSION.RELEASE;
         int sdk = Build.VERSION.SDK_INT;
-        Log.i(TAG, "release:" + release + "sdk:" + sdk);
+        BubingLog.i(TAG, "release:" + release + "sdk:" + sdk);
         String manufacturer = android.os.Build.MANUFACTURER;
         if (!TextUtils.isEmpty(manufacturer)) {
             if (manufacturer.toLowerCase().contains("lenovo")) {//对于联想的手机返回数据
