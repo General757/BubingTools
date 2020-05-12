@@ -955,11 +955,13 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
     }
 
     private void onTakeResult(ArrayList<ResultPhoto> resultPhotos, String... message) {
-        if (message.length > 0) {
-            Toast.makeText(this, "onResultCallBack resultPhotos：" + resultPhotos + " message：" + message[0], Toast.LENGTH_SHORT).show();
+        if (message.length > 0 && !TextUtils.isEmpty(message[0])) {
+//            Toast.makeText(this, "onResultCallBack resultPhotos：" + resultPhotos + " message：" + message[0], Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, message[0], Toast.LENGTH_SHORT).show();
             BubingLog.i("onResultCallBack result：" + resultPhotos.toString() + " message：" + message[0]);
         } else if (multipleCrop != null && multipleCrop.isHasFailed()) {
-            Toast.makeText(this, "onResultCallBack resultPhotos：" + resultPhotos + " message：" + getResources().getString(R.string.msg_crop_failed), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "onResultCallBack resultPhotos：" + resultPhotos + " message：" + getResources().getString(R.string.msg_crop_failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.msg_crop_failed), Toast.LENGTH_SHORT).show();
             BubingLog.i("onResultCallBack resultPhotos：" + resultPhotos.toString() + " message：" + getResources().getString(R.string.msg_crop_failed));
         } else if (Setting.compressConfig != null) {
             boolean hasFailed = false;
@@ -970,7 +972,8 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
                 }
             }
             if (hasFailed) {
-                Toast.makeText(this, "onResultCallBack hasFailed：" + hasFailed + " message：" + getString(R.string.msg_compress_failed), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "onResultCallBack hasFailed：" + hasFailed + " message：" + getString(R.string.msg_compress_failed), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.msg_compress_failed), Toast.LENGTH_SHORT).show();
                 BubingLog.i("onResultCallBack hasFailed：" + hasFailed + " message：" + getString(R.string.msg_compress_failed));
             } else {
                 BubingLog.i("onResultCallBack hasFailed：" + hasFailed + " result：" + resultPhotos.toString());

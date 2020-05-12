@@ -44,7 +44,7 @@ dependencies {
 
 ext {
     releaseArtifact = 'bubing_camera'
-    releaseVersion = '0.0.1'
+    releaseVersion = '0.0.2'
 }
 /**①.发布到本地maven仓库*/
 apply from: '../mavenLocal.gradle'
