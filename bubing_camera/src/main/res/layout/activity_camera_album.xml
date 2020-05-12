@@ -17,7 +17,7 @@
             android:id="@+id/m_tool_bar"
             android:layout_width="0dp"
             android:layout_height="@dimen/toolbar_size"
-            android:background="@color/colorPrimary"
+            android:background="@color/statubar_primary"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@
             android:id="@+id/root_view_album_items"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/colorPrimaryTranslation"
+            android:background="@color/statubar_primary_translation"
             android:paddingStart="8dp"
             android:paddingLeft="8dp"
             android:paddingTop="50dp"
@@ -120,7 +120,7 @@
             android:id="@+id/m_bottom_bar"
             android:layout_width="0dp"
             android:layout_height="42dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/statubar_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
@@ -184,7 +184,7 @@
             android:id="@+id/m_back_line"
             android:layout_width="1dp"
             android:layout_height="18dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/statubar_primary_dark"
             app:layout_constraintBottom_toBottomOf="@+id/m_tool_bar"
             app:layout_constraintLeft_toRightOf="@+id/iv_back"
             app:layout_constraintTop_toTopOf="@+id/m_tool_bar" />
@@ -193,7 +193,7 @@
             android:id="@+id/m_tool_bar_bottom_line"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/statubar_primary_dark"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/m_tool_bar" />
@@ -273,7 +273,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:visibility="gone"
-            app:backgroundTint="@color/colorPrimaryTranslation"
+            app:backgroundTint="@color/statubar_primary_translation"
             app:borderWidth="0dp"
             app:elevation="1dp"
             app:fabSize="normal"

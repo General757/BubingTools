@@ -203,7 +203,7 @@ public class FilePathUtils {
         return new File(cacheDir.getPath() + File.separator + folderPath);
     }
 
-    public File getFileDcimDir(Context app) {//SD卡根目录
+    public static File getFileDcimDir(Context app) {//SD卡根目录
         File dcimDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         if (null == dcimDir) {
             File tempPath = Environment.getExternalStorageDirectory();//SD卡根目录

@@ -30,7 +30,7 @@
         android:paddingEnd="8dp"
         android:paddingRight="8dp"
         android:paddingBottom="3dp"
-        android:shadowColor="@color/colorPrimary"
+        android:shadowColor="@color/statubar_primary"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="1.2"

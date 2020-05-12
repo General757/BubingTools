@@ -6,6 +6,12 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorPrimaryTranslation">#eb212123</color>//操作栏带透明的色值，如预览页的底部操作栏颜色，相册页的相机按钮背景颜色。
 
+    <!--操作栏颜色-->
+    <color name="statubar_primary">#393a3f</color>//操作栏主色，如相册页顶部和底部操作栏
+    <color name="statubar_primary_dark">#303135</color>//操作栏偏暗色，操作栏间隔线颜色，如相册页返回按钮右边的竖线
+    <color name="statubar_primary_translation">#eb212123</color>
+    //操作栏带透明的色值，如预览页的底部操作栏颜色，相册页的相机按钮背景颜色。
+
     <!--状态栏-->
     <color name="status_bar">#393a3f</color>
 

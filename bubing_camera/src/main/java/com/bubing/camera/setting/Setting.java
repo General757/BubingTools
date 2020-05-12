@@ -23,35 +23,39 @@ import androidx.annotation.IntDef;
  * @Date: 2020-05-09 14:31
  */
 public class Setting {
-    public static int minWidth = 1;
-    public static int minHeight = 1;
-    public static long minSize = 1;
-    public static int count = 1;
-    public static int pictureCount = -1;
-    public static int videoCount = -1;
-    public static WeakReference<View> photosAdView = null;
-    public static WeakReference<View> albumItemsAdView = null;
-    public static boolean photoAdIsOk = false;
-    public static boolean albumItemsAdIsOk = false;
-    public static ArrayList<Photo> selectedPhotos = new ArrayList<>();
-    public static boolean showOriginalMenu = false;
-    public static boolean originalMenuUsable = false;
-    public static String originalMenuUnusableHint = "";
-    public static boolean selectedOriginal = false;
-    public static boolean isShowCamera = false;
-    public static int cameraLocation = 1;
-    public static boolean onlyStartCamera = false;
-    public static boolean showPuzzleMenu = true;
-    public static List<String> filterTypes = new ArrayList<>();
-    public static boolean showGif = false;
-    public static boolean showVideo = false;
-    public static boolean showCleanMenu = true;
-    public static long videoMinSecond = 0L;
-    public static long videoMaxSecond = Long.MAX_VALUE;
-    public static ImageEngine imageEngine = null;
-    public static CropOptions cropOptions = null;
+    public static int minWidth = 1;//设置显示照片的最小宽度
+    public static int minHeight = 1;//设置显示照片的最小高度
+    public static long minSize = 1;//设置显示照片的最小文件大小
+    public static int count = 1;//设置选择数
+    public static int pictureCount = -1;//设置选择图片数(设置此参数后setCount失效)
+    public static int videoCount = -1;//设置选择视频数(设置此参数后setCount失效)
+
+    public static WeakReference<View> photosAdView = null;//使用图片列表的广告View
+    public static WeakReference<View> albumItemsAdView = null;//使用专辑项目列表的广告View
+    public static boolean photoAdIsOk = false;//图片列表广告是否加载完毕
+    public static boolean albumItemsAdIsOk = false;//专辑项目列表广告是否加载完毕
+
+    public static ArrayList<Photo> selectedPhotos = new ArrayList<>();//设置默认选择图片地址集合
+    public static boolean showOriginalMenu = false;//原图选项是否显示
+    public static boolean selectedOriginal = false;//原图选项默认状态是否为选中状态
+    public static boolean originalMenuUsable = false;//原图按钮是否可使用
+    public static String originalMenuUnusableHint = "";//原图按钮不可使用时给用户的文字提示
+    public static boolean isShowCamera = false;//是否显示相机按钮
+    public static int cameraLocation = 1;//设置相机按钮位置
+    public static boolean onlyStartCamera = false;//仅启动相册
+    public static boolean showPuzzleMenu = false;//是否显示拼图按钮
+    public static List<String> filterTypes = new ArrayList<>();//过滤
+    public static boolean showGif = false;//是否显示gif图
+    public static boolean showVideo = false;//是否显示video
+    public static boolean showCleanMenu = true;//相册选择页是否显示清空按钮
+    public static long videoMinSecond = 0L;//显示最少多少秒的视频
+    public static long videoMaxSecond = Long.MAX_VALUE;//显示最多多少秒的视频
+    public static ImageEngine imageEngine = null;//图片加载引擎的具体实现
+
+    public static CropOptions cropOptions = null;//是否剪切-配置
     public static boolean correctImage = false;//是对拍的照片进行旋转角度纠正
-    public static CompressConfig compressConfig = null;
+
+    public static CompressConfig compressConfig = null;//是否对照片进行压缩-压缩配置
     public static boolean compressDialog = false;//是否显示压缩对话框
 
     public static final int LIST_FIRST = 0;
@@ -82,7 +86,7 @@ public class Setting {
         isShowCamera = false;
         cameraLocation = BOTTOM_RIGHT;
         onlyStartCamera = false;
-        showPuzzleMenu = true;
+        showPuzzleMenu = false;
         filterTypes.clear();
         showGif = false;
         showVideo = false;

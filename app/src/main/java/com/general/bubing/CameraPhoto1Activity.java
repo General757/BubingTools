@@ -215,7 +215,7 @@ public class CameraPhoto1Activity extends AppCompatActivity implements Navigatio
                 break;
 
             case R.id.album_original_unusable://显示原图按钮，并且默认不选中，按钮不可用。使用场景举例：仅VIP可以上传原图
-                boolean isVip = false;//假设获取用户信息发现该用户不是vip
+                boolean isVip = true;//假设获取用户信息发现该用户不是vip
                 TakePhotoImpl.createAlbum(this, true, GlideEngine.getInstance())
                         .setCount(9)
                         .setOriginalMenu(false, isVip, "该功能为VIP会员特权功能")

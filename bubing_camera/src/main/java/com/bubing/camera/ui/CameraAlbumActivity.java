@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -50,9 +51,9 @@ import com.bubing.camera.ui.adapter.PhotosAdapter;
 import com.bubing.camera.utils.BubingLog;
 import com.bubing.camera.utils.CameraUtils;
 import com.bubing.camera.utils.ColorUtils;
+import com.bubing.camera.utils.FilePathUtils;
 import com.bubing.camera.utils.FileUtils;
 import com.bubing.camera.utils.ImageFiles;
-import com.bubing.camera.utils.ImageRotateUtil;
 import com.bubing.camera.utils.PermissionUtil;
 import com.bubing.camera.utils.PhotoUtils;
 import com.bubing.camera.utils.SettingsUtils;
@@ -67,10 +68,7 @@ import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.IdRes;
@@ -159,7 +157,7 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int statusColor = getWindow().getStatusBarColor();
             if (statusColor == Color.TRANSPARENT) {
-                statusColor = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+                statusColor = ContextCompat.getColor(this, R.color.statubar_primary_dark);
             }
             if (ColorUtils.isWhiteColor(statusColor)) {
                 SystemUtils.getInstance().setStatusDark(this, true);
@@ -322,7 +320,7 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
         } else if (R.id.iv_back == id) {//返回
             onBackPressed();
         } else if (R.id.tv_done == id) {//完成
-            done();
+            doneMenu();
         } else if (R.id.tv_clear == id) {//清空
             if (ResultStorage.isEmpty()) {
                 processSecondMenu();
@@ -334,7 +332,8 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
             processSecondMenu();
         } else if (R.id.tv_original == id) {//原图
             if (!Setting.originalMenuUsable) {
-                Toast.makeText(this, Setting.originalMenuUnusableHint, Toast.LENGTH_SHORT).show();
+                if (!TextUtils.isEmpty(Setting.originalMenuUnusableHint))
+                    Toast.makeText(this, Setting.originalMenuUnusableHint, Toast.LENGTH_SHORT).show();
                 return;
             }
             Setting.selectedOriginal = !Setting.selectedOriginal;
@@ -358,47 +357,30 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
 
         if (View.VISIBLE == mSecondMenus.getVisibility()) {
             mSecondMenus.setVisibility(View.INVISIBLE);
-            if (Setting.isShowCamera && Setting.isBottomRightCamera()) {
+            if (Setting.isShowCamera && Setting.isBottomRightCamera())
                 ivCamera.setVisibility(View.VISIBLE);
-            }
         } else {
             mSecondMenus.setVisibility(View.VISIBLE);
-            if (Setting.isShowCamera && Setting.isBottomRightCamera()) {
+            if (Setting.isShowCamera && Setting.isBottomRightCamera())
                 ivCamera.setVisibility(View.INVISIBLE);
-            }
         }
     }
 
-    private void done() {//点击完成按钮
-        for (Photo photo : ResultStorage.photos) {
-            try {
-                if (photo.width == 0 || photo.height == 0)
-                    BitmapUtils.calculateLocalImageSizeThroughBitmapOptions(this, photo);
-
-                if (BitmapUtils.needChangeWidthAndHeight(this, photo)) {
-                    int h = photo.width;
-                    photo.width = photo.height;
-                    photo.height = h;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
+    private void doneMenu() {//点击完成按钮
         if (Setting.isCrop()) {
             try {
                 onMultipleCrop(MultipleCrop.of(this, ResultStorage.photos, ImageType.OTHER), Setting.cropOptions);
             } catch (BException e) {
-                onActivityResultAlbum();
+                onAlbumResult();
                 e.printStackTrace();
             }
-        } else {
-            onActivityResultAlbum();
-        }
+        } else
+            onAlbumResult();
     }
 
     private void processOriginalMenu() {
-        if (!Setting.showOriginalMenu) return;
+        if (!Setting.showOriginalMenu)
+            return;
         if (Setting.selectedOriginal) {
             tvOriginal.setTextColor(ContextCompat.getColor(this, R.color.fg_accent));
         } else {
@@ -622,43 +604,22 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
      * 创建图片地址uri,用于保存拍照后的照片 Android 10以后使用这种方法
      */
     private Uri createImageUri() {
-        String status = Environment.getExternalStorageState();
-        // 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
-        if (status.equals(Environment.MEDIA_MOUNTED)) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) // 判断是否有SD卡,优先使用SD卡存储,当没有SD卡时使用手机存储
             return getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
-        } else {
+        else
             return getContentResolver().insert(MediaStore.Images.Media.INTERNAL_CONTENT_URI, new ContentValues());
-        }
     }
 
     /**
      * 创建相机拍照文件存储临时地址
      */
-    private void createCameraTempImageFile() {
-        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        if (null == dir) {
-            dir = new File(Environment.getExternalStorageDirectory(), File.separator + "DCIM" + File.separator + "Camera" + File.separator);
-        }
-        if (!dir.exists() || !dir.isDirectory()) {
-            if (!dir.mkdirs()) {
-                dir = getExternalFilesDir(null);
-                if (null == dir || !dir.exists()) {
-                    dir = getFilesDir();
-                    if (null == dir || !dir.exists()) {
-                        String cacheDirPath = File.separator + "data" + File.separator + "data" + File.separator + getPackageName() + File.separator + "cache" + File.separator;
-                        dir = new File(cacheDirPath);
-                        if (!dir.exists())
-                            dir.mkdirs();
-                    }
-                }
-            }
-        }
-
+    private File createImageTempFile() {
         try {
-            tempImageFile = File.createTempFile("IMG", ".jpg", dir);
+            File dirFile = FilePathUtils.getFileDcimDir(CameraAlbumActivity.this);
+            return File.createTempFile("IMG", ".jpg", dirFile);
         } catch (IOException e) {
             e.printStackTrace();
-            tempImageFile = null;
+            return null;
         }
     }
 
@@ -698,45 +659,38 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
                 return;
             }
 
-            createCameraTempImageFile();
+            tempImageFile = createImageTempFile();
             if (tempImageFile != null && tempImageFile.exists()) {
                 tempImageUri = UriUtils.getUri(this, tempImageFile);
                 cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //对目标应用临时授权该Uri所代表的文件
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempImageUri);//将拍取的照片保存到指定URI
                 startActivityForResult(cameraIntent, requestCode);
-            } else {
+            } else
                 Toast.makeText(this, R.string.camera_temp_file_error, Toast.LENGTH_SHORT).show();
-            }
-        } else {
+        } else
             Toast.makeText(this, R.string.msg_no_camera, Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.Code.REQUEST_SETTING_APP_DETAILS) {//应用详情-回调
-            if (PermissionUtil.checkAndRequestPermissionsInActivity(this, getNeedPermissions())) {
+            if (PermissionUtil.checkAndRequestPermissionsInActivity(this, getNeedPermissions()))
                 hasPermissions();
-            } else {
+            else
                 permissionView.setVisibility(View.VISIBLE);
-            }
             return;
         } else if (requestCode == Constants.Code.REQUEST_CAMERA) {//拍照-回调
             if (resultCode == RESULT_OK) {//确定
                 Uri imageUri = null;
                 Photo photo = null;
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                    imageUri = tempImageQUri;
                     photo = PhotoUtils.getPhoto(this, tempImageQUri);
-                    if (photo == null) {
-                        BubingLog.e(TAG, "onCameraResultForQ() -》photo = null");
-                        return;
-                    }
+                    BubingLog.e(TAG, "onCameraResultForQ() -》photo = " + photo);
+                    if (photo != null)
+                        imageUri = tempImageQUri;
                 } else {
-                    if (tempImageFile == null || !tempImageFile.exists())
-                        throw new RuntimeException("EasyPhotos拍照保存的图片不存在");
-                    else {
+                    if (tempImageFile != null && tempImageFile.exists()) {
                         imageUri = tempImageUri;
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = true;
@@ -750,36 +704,32 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
                     }
                 }
                 if (imageUri != null) {
-                    if (Setting.isCorrectImage())
-                        ImageRotateUtil.of().correctImage(this, imageUri);
+//                    if (Setting.isCorrectImage())
+//                        ImageRotateUtil.of().correctImage(this, imageUri);
                     if (Setting.isCrop()) {
                         try {
-//                            Photo photo = PhotoUtils.getPhoto(this, imageUri);
-//                            Uri outPutUri = Uri.fromFile(ImageFiles.getCropTempFile(this, imageUri));//生成临时裁切输出路径
                             onSingleCrop(photo, PhotoUtils.getCropPhoto(this, photo, ImageType.CAMERA), Setting.cropOptions);
                         } catch (BException e) {
-                            onActivityResultCamera();
+                            onCameraResult(photo);
                             e.printStackTrace();
                         }
-                    } else {
-                        onActivityResultCamera();
-                    }
+                    } else
+                        onCameraResult(photo);
                 } else
-                    throw new RuntimeException("EasyPhotos拍照保存的图片不存在");
+                    Toast.makeText(this, "拍照保存的图片不存在", Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED) {//取消
                 // 删除临时文件
                 if (tempImageFile != null && tempImageFile.exists()) {
                     tempImageFile.delete();
                     tempImageFile = null;
                 }
-                if (Setting.onlyStartCamera) {
+                if (Setting.onlyStartCamera)
                     finish();
-                }
             }
         } else if (requestCode == Constants.Code.REQUEST_PREVIEW_ACTIVITY) {//预览-回调
             if (resultCode == RESULT_OK) {//确定
                 if (data.getBooleanExtra(Constants.Key.PREVIEW_CLICK_DONE, false)) {
-                    done();
+                    doneMenu();
                     return;
                 }
                 photosAdapter.change();
@@ -873,87 +823,50 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
         shouldShowMenuDone();
     }
 
-    private void onActivityResultCamera() {//拍照回调
+    private void onCameraResult(Photo photo) {//拍照回调
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            onCameraResultForQ();
-            return;
-        }
+            if (Setting.onlyStartCamera || albumModel.getAlbumItems().isEmpty()) {
+                photo.selectedOriginal = Setting.selectedOriginal;
+                ArrayList<ResultPhoto> resultPhotos = new ArrayList<>();
+                resultPhotos.add(PhotoUtils.getResultPhoto(this, photo, ImageType.CAMERA));
+                setActivityResult(resultPhotos);
+                return;
+            }
 
-        if (tempImageFile == null || !tempImageFile.exists()) {
-            throw new RuntimeException("EasyPhotos拍照保存的图片不存在");
+            addNewPhoto(photo);
+        } else {
+            if (Setting.onlyStartCamera || albumModel.getAlbumItems().isEmpty()) {
+                photo.selectedOriginal = Setting.selectedOriginal;
+                ArrayList<ResultPhoto> resultPhotos = new ArrayList<>();
+                resultPhotos.add(PhotoUtils.getResultPhoto(this, photo, ImageType.CAMERA));
+                setActivityResult(resultPhotos);
+                return;
+            }
+
+            addNewPhoto(photo);
         }
-        onCameraResult();
     }
 
-    private void onCameraResultForQ() {
-        Photo photo = PhotoUtils.getPhoto(this, tempImageQUri);
-        if (photo == null) {
-            BubingLog.e(TAG, "onCameraResultForQ() -》photo = null");
-            return;
-        }
-
-        MediaScannerConnectionUtils.refresh(this, new File(photo.path));// 更新媒体库
-        if (Setting.onlyStartCamera || albumModel.getAlbumItems().isEmpty()) {
-            Intent data = new Intent();
-            photo.selectedOriginal = Setting.selectedOriginal;
-            ArrayList<ResultPhoto> resultPhotos = new ArrayList<>();
-            resultPhotos.add(PhotoUtils.getResultPhoto(this, photo, ImageType.CAMERA));
-            data.putParcelableArrayListExtra(Constants.Key.RESULT_PHOTOS, resultPhotos);
-            data.putExtra(Constants.Key.RESULT_SELECTED_ORIGINAL, Setting.selectedOriginal);
-            setResult(RESULT_OK, data);
-            finish();
-            return;
-        }
-
-        addNewPhoto(photo);
-    }
-
-    private void onCameraResult() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss", Locale.getDefault());
-        String imageName = "IMG_%s.jpg";
-        String filename = String.format(imageName, dateFormat.format(new Date()));
-        File reNameFile = new File(tempImageFile.getParentFile(), filename);
-        if (!reNameFile.exists()) {
-            if (tempImageFile.renameTo(reNameFile))
-                tempImageFile = reNameFile;
-        }
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(tempImageFile.getAbsolutePath(), options);
-        MediaScannerConnectionUtils.refresh(this, tempImageFile);// 更新媒体库
-        if (Setting.onlyStartCamera || albumModel.getAlbumItems().isEmpty()) {
-            Intent data = new Intent();
-            Uri uri = UriUtils.getUri(this, tempImageFile);
-            Photo photo = new Photo(tempImageFile.getName(), uri, tempImageFile.getAbsolutePath(), tempImageFile.lastModified() / 1000, options.outWidth,
-                    options.outHeight, tempImageFile.length(), DurationUtils.getDuration(tempImageFile.getAbsolutePath()), options.outMimeType);
-            photo.selectedOriginal = Setting.selectedOriginal;
-            ArrayList<ResultPhoto> resultPhotos = new ArrayList<>();
-            resultPhotos.add(PhotoUtils.getResultPhoto(this, photo, ImageType.CAMERA));
-            data.putParcelableArrayListExtra(Constants.Key.RESULT_PHOTOS, resultPhotos);
-            data.putExtra(Constants.Key.RESULT_SELECTED_ORIGINAL, Setting.selectedOriginal);
-            setResult(RESULT_OK, data);
-            finish();
-            return;
-        }
-
-        Uri uri = UriUtils.getUri(this, tempImageFile);
-        Photo photo = new Photo(tempImageFile.getName(), uri, tempImageFile.getAbsolutePath(), tempImageFile.lastModified() / 1000, options.outWidth,
-                options.outHeight, tempImageFile.length(), DurationUtils.getDuration(tempImageFile.getAbsolutePath()), options.outMimeType);
-        addNewPhoto(photo);
-    }
-
-    private void onActivityResultAlbum() {//相册回调
-        Intent intent = new Intent();
-        ResultStorage.processOriginal();
+    private void onAlbumResult() {//相册回调
         ArrayList<ResultPhoto> resultPhotos = new ArrayList<>();
         for (Photo photo : ResultStorage.photos) {
+            try {
+                if (photo.width == 0 || photo.height == 0)
+                    BitmapUtils.calculateLocalImageSizeThroughBitmapOptions(this, photo);
+
+                if (BitmapUtils.needChangeWidthAndHeight(this, photo)) {
+                    int h = photo.width;
+                    photo.width = photo.height;
+                    photo.height = h;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             resultPhotos.add(PhotoUtils.getResultPhoto(this, photo, ImageType.CAMERA));
         }
-        intent.putParcelableArrayListExtra(Constants.Key.RESULT_PHOTOS, resultPhotos);
 
-        intent.putExtra(Constants.Key.RESULT_SELECTED_ORIGINAL, Setting.selectedOriginal);
-        setResult(RESULT_OK, intent);
-        finish();
+        ResultStorage.processOriginal();
+        setActivityResult(resultPhotos);
     }
 
     private ResultPhoto mResultPhoto;
@@ -1013,27 +926,27 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
 
     private void takeCompressResult(final ArrayList<ResultPhoto> resultPhotos, final String... message) {
         if (!Setting.isCompress()) {
-            onResultCallBack(resultPhotos, message);
+            onTakeResult(resultPhotos, message);
         } else {
             if (Setting.isCompressDialog())
                 wailLoadDialog = CropUtils.showProgressDialog(this, getResources().getString(R.string.tip_compress));
             CompressImageImpl.of(this, Setting.compressConfig, resultPhotos, new CompressImage.CompressListener() {
                 @Override
                 public void onCompressSuccess(ArrayList<ResultPhoto> images) {
-                    if (!Setting.compressConfig.isEnableReserveRaw()) {
+                    if (!Setting.compressConfig.isEnableReserveRaw())
                         deleteRawFile(images);
-                    }
-                    onResultCallBack(resultPhotos);
+
+                    onTakeResult(resultPhotos);
                     if (wailLoadDialog != null && !isFinishing())
                         wailLoadDialog.dismiss();
                 }
 
                 @Override
                 public void onCompressFailed(ArrayList<ResultPhoto> images, String msg) {
-                    if (!Setting.compressConfig.isEnableReserveRaw()) {
+                    if (!Setting.compressConfig.isEnableReserveRaw())
                         deleteRawFile(images);
-                    }
-                    onResultCallBack(images, String.format(getResources().getString(R.string.tip_compress_failed), message.length > 0 ? message[0] : "", msg, resultPhotos.get(0).getCompressPath()));
+
+                    onTakeResult(images, String.format(getResources().getString(R.string.tip_compress_failed), message.length > 0 ? message[0] : "", msg, resultPhotos.get(0).getCompressPath()));
                     if (wailLoadDialog != null && !isFinishing())
                         wailLoadDialog.dismiss();
                 }
@@ -1041,15 +954,13 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
         }
     }
 
-    private void onResultCallBack(ArrayList<ResultPhoto> resultPhotos, String... message) {
+    private void onTakeResult(ArrayList<ResultPhoto> resultPhotos, String... message) {
         if (message.length > 0) {
             Toast.makeText(this, "onResultCallBack resultPhotos：" + resultPhotos + " message：" + message[0], Toast.LENGTH_SHORT).show();
             BubingLog.i("onResultCallBack result：" + resultPhotos.toString() + " message：" + message[0]);
-//            listener.takeFail(result, message[0]);
         } else if (multipleCrop != null && multipleCrop.isHasFailed()) {
             Toast.makeText(this, "onResultCallBack resultPhotos：" + resultPhotos + " message：" + getResources().getString(R.string.msg_crop_failed), Toast.LENGTH_SHORT).show();
             BubingLog.i("onResultCallBack resultPhotos：" + resultPhotos.toString() + " message：" + getResources().getString(R.string.msg_crop_failed));
-//            listener.takeFail(result, getResources().getString(R.string.msg_crop_failed));
         } else if (Setting.compressConfig != null) {
             boolean hasFailed = false;
             for (ResultPhoto image : resultPhotos) {
@@ -1061,19 +972,23 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
             if (hasFailed) {
                 Toast.makeText(this, "onResultCallBack hasFailed：" + hasFailed + " message：" + getString(R.string.msg_compress_failed), Toast.LENGTH_SHORT).show();
                 BubingLog.i("onResultCallBack hasFailed：" + hasFailed + " message：" + getString(R.string.msg_compress_failed));
-//                listener.takeFail(result, getString(R.string.msg_compress_failed));
             } else {
-                Toast.makeText(this, "onResultCallBack hasFailed：" + hasFailed + " resultPhotos：" + resultPhotos, Toast.LENGTH_SHORT).show();
                 BubingLog.i("onResultCallBack hasFailed：" + hasFailed + " result：" + resultPhotos.toString());
-//                listener.takeSuccess(result);
+                setActivityResult(resultPhotos);
             }
         } else {
-            Toast.makeText(this, "onResultCallBack result：" + resultPhotos, Toast.LENGTH_SHORT).show();
             BubingLog.i("onResultCallBack result：" + resultPhotos.toString());
-//            listener.takeSuccess(result);
-            onActivityResult(resultPhotos);
+            setActivityResult(resultPhotos);
         }
         clearParams();
+    }
+
+    private void setActivityResult(ArrayList<ResultPhoto> resultPhotos) {//相册回调
+        Intent intent = new Intent();
+        intent.putParcelableArrayListExtra(Constants.Key.RESULT_PHOTOS, resultPhotos);
+        intent.putExtra(Constants.Key.RESULT_SELECTED_ORIGINAL, Setting.selectedOriginal);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private void clearParams() {
@@ -1083,11 +998,4 @@ public class CameraAlbumActivity extends AppCompatActivity implements AlbumItems
         multipleCrop = null;
     }
 
-    private void onActivityResult(ArrayList<ResultPhoto> resultPhotos) {//相册回调
-        Intent intent = new Intent();
-        intent.putParcelableArrayListExtra(Constants.Key.RESULT_PHOTOS, resultPhotos);
-        intent.putExtra(Constants.Key.RESULT_SELECTED_ORIGINAL, Setting.selectedOriginal);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
 }

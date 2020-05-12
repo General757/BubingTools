@@ -15,9 +15,9 @@ import com.bubing.camera.models.crop.CropOptions;
 import com.bubing.camera.result.ResultStorage;
 import com.bubing.camera.result.TakeResult;
 import com.bubing.camera.setting.Setting;
+import com.bubing.camera.ui.CameraAlbumActivity;
 import com.bubing.camera.ui.CameraLandscapeActivity;
 import com.bubing.camera.ui.CameraPortraitActivity;
-import com.bubing.camera.ui.CameraAlbumActivity;
 import com.bubing.camera.utils.UriUtils;
 
 import java.io.File;
@@ -416,18 +416,14 @@ public class TakePhotoImpl {
         for (String path : selectedPhotoPaths) {
             File file = new File(path);
             Uri uri = null;
-            if (null != mActivity && null != mActivity.get()) {
+            if (null != mActivity && null != mActivity.get())
                 uri = UriUtils.getUri(mActivity.get(), file);
-            }
-            if (null != mFragment && null != mFragment.get()) {
+            if (null != mFragment && null != mFragment.get())
                 uri = UriUtils.getUri(mFragment.get().getActivity(), file);
-            }
-            if (null != mFragmentV && null != mFragmentV.get()) {
+            if (null != mFragmentV && null != mFragmentV.get())
                 uri = UriUtils.getUri(mFragmentV.get().getActivity(), file);
-            }
-            if (uri == null) {
+            if (uri == null)
                 uri = Uri.fromFile(file);
-            }
 
             selectedPhotos.add(new Photo(null, uri, path, 0, 0, 0, 0, 0, null));
         }
@@ -438,17 +434,22 @@ public class TakePhotoImpl {
     /**
      * 原图按钮设置,不调用该方法不显示原图按钮
      *
+     * @param shouldShow   原图选项是否显示
      * @param isChecked    原图选项默认状态是否为选中状态
      * @param usable       原图按钮是否可使用
      * @param unusableHint 原图按钮不可使用时给用户的文字提示
      * @return TakePhotoImpl
      */
-    public TakePhotoImpl setOriginalMenu(boolean isChecked, boolean usable, String unusableHint) {
-        Setting.showOriginalMenu = true;
+    public TakePhotoImpl setOriginalMenu(boolean shouldShow, boolean isChecked, boolean usable, String unusableHint) {
+        Setting.showOriginalMenu = shouldShow;
         Setting.selectedOriginal = isChecked;
         Setting.originalMenuUsable = usable;
         Setting.originalMenuUnusableHint = unusableHint;
         return TakePhotoImpl.this;
+    }
+
+    public TakePhotoImpl setOriginalMenu(boolean isChecked, boolean usable, String unusableHint) {
+        return setOriginalMenu(true, isChecked, usable, unusableHint);
     }
 
     /**

@@ -87,8 +87,7 @@ public class PreviewPhotosAdapter extends RecyclerView.Adapter<PreviewPhotosAdap
                 holder.ivLongPhoto.setImage(ImageSource.uri(path));
             } else {
                 holder.ivPhotoView.setVisibility(View.VISIBLE);
-                Setting.imageEngine.loadPhoto(holder.ivPhotoView.getContext(), uri,
-                        holder.ivPhotoView);
+                Setting.imageEngine.loadPhoto(holder.ivPhotoView.getContext(), uri, holder.ivPhotoView);
             }
         }
 
