@@ -12,12 +12,12 @@ import android.graphics.Paint.Join;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.bubing.tools.Visible;
 import com.bubing.tools.asset.TypefaceConfig;
 import com.bubing.tools.bitmap.AbstractOutlineTextDrawable;
 import com.bubing.tools.bitmap.BitmapGenerator;
+import com.bubing.tools.utils.BubingLog;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -58,7 +58,7 @@ public class TextBitmapGenerator implements BitmapGenerator {
                 if (var6 != null && var6.length > 0) {
                     File var7 = new File(var5, var6[0]);
                     if (!var7.exists()) {
-                        Log.e("AliYunLog", "Font file[" + var7.getAbsolutePath() + "] not exist!");
+                        BubingLog.e("AliYunLog", "Font file[" + var7.getAbsolutePath() + "] not exist!");
                         var3 = new TypefaceConfig();
                     } else {
                         var3 = new TypefaceConfig(Typeface.createFromFile(var7));
@@ -67,7 +67,7 @@ public class TextBitmapGenerator implements BitmapGenerator {
                     var3 = new TypefaceConfig();
                 }
             } catch (Exception var8) {
-                Log.e("AliYunLog", "Load font error!", var8);
+                BubingLog.e("AliYunLog", "Load font error!", var8);
                 var3 = new TypefaceConfig();
             }
         }

@@ -80,7 +80,7 @@ public class FileUtil {
 //            ContentValues contentValues = new ContentValues(1);
 //            contentValues.put(MediaStore.Images.Media.DATA, filePath);
 //            uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
-            uri = FileProvider.getUriForFile(context, applicationId + ".provider", new File(filePath));
+            uri = FileProvider.getUriForFile(context, UriUtils.getFileProviderName(context), new File(filePath));
         }
         return uri;
     }

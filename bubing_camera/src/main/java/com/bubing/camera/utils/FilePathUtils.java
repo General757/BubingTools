@@ -185,6 +185,12 @@ public class FilePathUtils {
             cacheDir = context.getCacheDir();
 
         File file = new File(cacheDir.getPath() + File.separator + folderPath);
+        if (file != null) {
+            if ((!file.exists() || !file.isDirectory()))
+                file.mkdirs();
+        } else
+            return "";
+
         StringBuilder absoluteFolderPath = new StringBuilder(file.getAbsolutePath());
         if (!absoluteFolderPath.toString().endsWith("/"))
             absoluteFolderPath.append("/");

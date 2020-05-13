@@ -21,13 +21,13 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bubing.tools.utils.BubingLog;
 import com.bubing.tools.utils.ChineseUtils;
 import com.bubing.tools.utils.CompatUtil;
 import com.bubing.tools.utils.LogUtils;
@@ -117,10 +117,7 @@ public class AutoLayoutTextView extends AppCompatTextView {
 //            }
 
             mTextRect.offsetTo(0, 0);
-            Log.d("BINARYTEXT", "suggest size : " + suggestedSize +
-                    " width : " + mTextRect.right +
-                    " height : " + mTextRect.bottom +
-                    " match : " + availableSPace.contains(mTextRect));
+            BubingLog.d("BINARYTEXT", "suggest size : " + suggestedSize + " width : " + mTextRect.right + " height : " + mTextRect.bottom + " match : " + availableSPace.contains(mTextRect));
             if (availableSPace.contains(mTextRect)) {
                 // may be too small, don't worry we will find the best match
                 return -1;
@@ -290,10 +287,7 @@ public class AutoLayoutTextView extends AppCompatTextView {
         int lo = start;
         int hi = end - 1;
         int mid = 0;
-        Log.d("BINARYTEXT", "start : " + start +
-                " end : " + end +
-                " width : " + availableSpace.right +
-                " height : " + availableSpace.bottom);
+        BubingLog.d("BINARYTEXT", "start : " + start + " end : " + end + " width : " + availableSpace.right + " height : " + availableSpace.bottom);
         while (lo <= hi) {
             mid = (lo + hi) >>> 1;
             int midValCmp = sizeTester.onTestSize(mid, availableSpace, text);
@@ -308,7 +302,7 @@ public class AutoLayoutTextView extends AppCompatTextView {
             }
         }
 
-        Log.d("BINARYTEXT", "last best : " + lastBest);
+        BubingLog.d("BINARYTEXT", "last best : " + lastBest);
         // make sure to return last best
         // this is what should always be returned
         return lastBest;
@@ -321,9 +315,7 @@ public class AutoLayoutTextView extends AppCompatTextView {
     private void initialize() {
         mStrokeJoin = Paint.Join.ROUND;
         mStrokeMiter = 10f;
-        mMaxTextSize = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP, 180,
-                getResources().getDisplayMetrics());
+        mMaxTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 180, getResources().getDisplayMetrics());
         mMaxTextSize = getResources().getDisplayMetrics().widthPixels;
         mAvailableSpaceRect = new RectF();
         if (mMaxLines == 0) {
@@ -587,17 +579,12 @@ public class AutoLayoutTextView extends AppCompatTextView {
 
         mWidthLimit = (int) mAvailableSpaceRect.right;
         mPaint = new TextPaint(getPaint());
-        super.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                efficientTextSizeSearch(startSize, (int) maxTextSize,
-                        mSizeTester, mAvailableSpaceRect));
+        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, efficientTextSizeSearch(startSize, (int) maxTextSize, mSizeTester, mAvailableSpaceRect));
     }
 
-    private int efficientTextSizeSearch(int start, int end,
-                                        SizeTester sizeTester, RectF availableSpace) {
+    private int efficientTextSizeSearch(int start, int end, SizeTester sizeTester, RectF availableSpace) {
         String text = getText().toString();
-        return binarySearch(start, end, text,
-                sizeTester, availableSpace);
+        return binarySearch(start, end, text, sizeTester, availableSpace);
     }
 
     protected boolean isNeedSelfMeasure() {
@@ -608,15 +595,13 @@ public class AutoLayoutTextView extends AppCompatTextView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int w, h;
         if (isNeedSelfMeasure()) {
-            super.onMeasure(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            super.onMeasure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             w = getMeasuredWidth();
             h = getMeasuredHeight();
             setMeasuredDimension(w + 30, h + 30);
             if (w != mMaxWidthWhenOutof || h != mMaxHeightWhenOutof) {
                 return;
             }
-
         } else {
             w = View.MeasureSpec.getSize(widthMeasureSpec);
             h = View.MeasureSpec.getSize(heightMeasureSpec);

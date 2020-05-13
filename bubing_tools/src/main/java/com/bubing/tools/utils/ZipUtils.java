@@ -5,8 +5,6 @@
 
 package com.bubing.tools.utils;
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,7 +30,7 @@ public class ZipUtils {
     }
 
     public static List<File> GetFileList(String zipFileString, boolean bContainFolder, boolean bContainFile) throws Exception {
-        LogUtils.v("XZip", "GetFileList(String)");
+        BubingLog.v("XZip", "GetFileList(String)");
         List<File> fileList = new ArrayList();
         ZipInputStream inZip = new ZipInputStream(new FileInputStream(zipFileString));
         String szName = "";
@@ -61,7 +59,7 @@ public class ZipUtils {
     }
 
     public static InputStream UpZip(String zipFileString, String fileString) throws Exception {
-        Log.v("XZip", "UpZip(String, String)");
+        BubingLog.v("XZip", "UpZip(String, String)");
         ZipFile zipFile = new ZipFile(zipFileString);
         ZipEntry zipEntry = zipFile.getEntry(fileString);
         return zipFile.getInputStream(zipEntry);
@@ -108,7 +106,7 @@ public class ZipUtils {
     }
 
     public static void ZipFolder(String srcFileString, String zipFileString) throws Exception {
-        Log.v("XZip", "ZipFolder(String, String)");
+        BubingLog.v("XZip", "ZipFolder(String, String)");
         ZipOutputStream outZip = new ZipOutputStream(new FileOutputStream(zipFileString));
         File file = new File(srcFileString);
         ZipFiles(file.getParent() + File.separator, file.getName(), outZip);
@@ -117,7 +115,7 @@ public class ZipUtils {
     }
 
     private static void ZipFiles(String folderString, String fileString, ZipOutputStream zipOutputSteam) throws Exception {
-        Log.v("XZip", "ZipFiles(String, String, ZipOutputStream)");
+        BubingLog.v("XZip", "ZipFiles(String, String, ZipOutputStream)");
         if (zipOutputSteam != null) {
             File file = new File(folderString + fileString);
             int len;
@@ -156,12 +154,12 @@ public class ZipUtils {
     }
 
     public static boolean isExistZip(String folderString) {
-        Log.v("XZip", "isExistZip(String, String)");
-        Log.v("XZip", folderString);
+        BubingLog.v("XZip", "isExistZip(String, String)");
+        BubingLog.v("XZip", folderString);
         boolean flag = false;
         File[] files = (new File(folderString)).listFiles();
         if (files == null) {
-            Log.v("XZip", "文件夹中无任何文件！");
+            BubingLog.v("XZip", "文件夹中无任何文件！");
             return false;
         } else {
             File[] var4 = files;
@@ -170,11 +168,11 @@ public class ZipUtils {
             for (int var6 = 0; var6 < var5; ++var6) {
                 File file = var4[var6];
                 if (!file.canRead()) {
-                    Log.v("XZip", "文件夹中无任何文件！");
+                    BubingLog.v("XZip", "文件夹中无任何文件！");
                 }
 
                 if (file.isFile() && file.getName().contains("zip")) {
-                    Log.v("XZip", file.getPath());
+                    BubingLog.v("XZip", file.getPath());
                     flag = true;
                 }
             }
@@ -184,11 +182,11 @@ public class ZipUtils {
     }
 
     public static List<File> isExitUnZipFile(String zipUrl, List<String> databaseList) {
-        Log.v("XZip", "isExitUnZipFile(String)");
+        BubingLog.v("XZip", "isExitUnZipFile(String)");
         List<File> zipList = new ArrayList();
         File[] files = (new File(zipUrl)).listFiles();
         if (files == null) {
-            Log.v("XZip", "文件夹中无任何文件！");
+            BubingLog.v("XZip", "文件夹中无任何文件！");
         }
 
         File[] var6 = files;
@@ -198,11 +196,11 @@ public class ZipUtils {
             File file = var6[var8];
             File f = file;
             if (!file.canRead()) {
-                Log.v("XZip", "文件夹中无任何文件！");
+                BubingLog.v("XZip", "文件夹中无任何文件！");
             }
 
             if (file.isFile() && file.getName().contains("zip")) {
-                Log.v("XZip", file.getPath());
+                BubingLog.v("XZip", file.getPath());
                 File dbFile = null;
 
                 try {
@@ -267,7 +265,7 @@ public class ZipUtils {
     }
 
     public static File unLockZip(String url) {
-        Log.v("XZip", "解密压缩文件" + url);
+        BubingLog.v("XZip", "解密压缩文件" + url);
         File zipFile = new File(url);
 
         try {
@@ -290,12 +288,12 @@ public class ZipUtils {
     }
 
     public static String checkZipFileIsExist(File f, List<String> fileList) {
-        Log.v("XZip", "isExitUnZipFile(String)");
+        BubingLog.v("XZip", "isExitUnZipFile(String)");
         String retStr = "";
         String flag = "1";
         String tch = "*";
         if (f.isFile() && f.getName().contains("zip")) {
-            Log.v("XZip", f.getPath());
+            BubingLog.v("XZip", f.getPath());
             File dbFile = null;
 
             try {

@@ -1,4 +1,4 @@
-package com.bubing.camera.utils;
+package com.bubing.tools.utils;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -10,8 +10,8 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
-import com.bubing.camera.exception.BException;
-import com.bubing.camera.exception.BExceptionType;
+import com.bubing.tools.exception.BException;
+import com.bubing.tools.exception.BExceptionType;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,7 +46,7 @@ public class ImageFiles {
             fos.write(bos.toByteArray());
             bos.flush();
             fos.flush();
-        } catch (java.io.IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             if (fos != null) {

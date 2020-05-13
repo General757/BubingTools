@@ -34,8 +34,9 @@ import androidx.fragment.app.FragmentActivity;
  * @Description: java类作用描述
  * @Author: bubing
  * @Date: 2020-05-11 13:31
- * GitHub:https://github.com/crazycodeboy/TakePhoto
- * GitHub:https://github.com/HuanTanSheng/EasyPhotos
+ * GitHub:https://github.com/wildma/IDCardCamera.git
+ * GitHub:https://github.com/crazycodeboy/TakePhoto.git
+ * GitHub:https://github.com/HuanTanSheng/EasyPhotos.git
  */
 public class TakePhotoImpl {
     private static final String TAG = TakePhotoImpl.class.getName();
@@ -122,19 +123,19 @@ public class TakePhotoImpl {
      * @param startupType 启动模式-拍摄证件方向
      */
     public static TakePhotoImpl createCamera(Activity activity, StartupType startupType) {
-        return TakePhotoImpl.with(activity, StartupType.CAMERA);
+        return TakePhotoImpl.with(activity, startupType);
     }
 
     public static TakePhotoImpl createCamera(android.app.Fragment fragment, StartupType startupType) {
-        return TakePhotoImpl.with(fragment, StartupType.CAMERA);
+        return TakePhotoImpl.with(fragment, startupType);
     }
 
     public static TakePhotoImpl createCamera(FragmentActivity activity, StartupType startupType) {
-        return TakePhotoImpl.with(activity, StartupType.CAMERA);
+        return TakePhotoImpl.with(activity, startupType);
     }
 
     public static TakePhotoImpl createCamera(Fragment fragmentV, StartupType startupType) {
-        return TakePhotoImpl.with(fragmentV, StartupType.CAMERA);
+        return TakePhotoImpl.with(fragmentV, startupType);
     }
 
     /**

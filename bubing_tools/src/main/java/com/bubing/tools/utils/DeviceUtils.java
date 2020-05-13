@@ -94,7 +94,6 @@ import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -161,8 +160,7 @@ public class DeviceUtils {
 
     public static int getDefaultLoadFactor(Context context) {
         if (_loadFactor == null) {
-            Integer integer = Integer.valueOf(0xf & context
-                    .getResources().getConfiguration().screenLayout);
+            Integer integer = Integer.valueOf(0xf & context.getResources().getConfiguration().screenLayout);
             _loadFactor = integer;
             _loadFactor = Integer.valueOf(Math.max(integer.intValue(), 1));
         }
@@ -177,9 +175,7 @@ public class DeviceUtils {
 
     public static DisplayMetrics getDisplayMetrics(Context context) {
         DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((WindowManager) context.getSystemService(
-                Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(
-                displaymetrics);
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
         return displaymetrics;
     }
 
@@ -222,18 +218,15 @@ public class DeviceUtils {
         // includes window decorations (statusbar bar/menu bar)
         if (Build.VERSION.SDK_INT >= 14 && Build.VERSION.SDK_INT < 17)
             try {
-                screenWidth = (Integer) Display.class.getMethod("getRawWidth")
-                        .invoke(d);
-                screenHeight = (Integer) Display.class
-                        .getMethod("getRawHeight").invoke(d);
+                screenWidth = (Integer) Display.class.getMethod("getRawWidth").invoke(d);
+                screenHeight = (Integer) Display.class.getMethod("getRawHeight").invoke(d);
             } catch (Exception ignored) {
             }
         // includes window decorations (statusbar bar/menu bar)
         if (Build.VERSION.SDK_INT >= 17)
             try {
                 Point realSize = new Point();
-                Display.class.getMethod("getRealSize", Point.class).invoke(d,
-                        realSize);
+                Display.class.getMethod("getRealSize", Point.class).invoke(d, realSize);
                 screenWidth = realSize.x;
                 screenHeight = realSize.y;
             } catch (Exception ignored) {
@@ -259,8 +252,7 @@ public class DeviceUtils {
             obj = c.newInstance();
             field = c.getField("status_bar_height");
             x = Integer.parseInt(field.get(obj).toString());
-            return context.getResources()
-                    .getDimensionPixelSize(x);
+            return context.getResources().getDimensionPixelSize(x);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -272,8 +264,7 @@ public class DeviceUtils {
         boolean flag = true;
         if (_hasBigScreen == null) {
             boolean flag1;
-            if ((0xf & context.getResources()
-                    .getConfiguration().screenLayout) >= 3)
+            if ((0xf & context.getResources().getConfiguration().screenLayout) >= 3)
                 flag1 = flag;
             else
                 flag1 = false;
@@ -296,10 +287,8 @@ public class DeviceUtils {
      */
     public static final boolean hasCamera(Context context) {
         if (_hasCamera == null) {
-            PackageManager pckMgr = context
-                    .getPackageManager();
-            boolean flag = pckMgr
-                    .hasSystemFeature("android.hardware.camera.front");
+            PackageManager pckMgr = context.getPackageManager();
+            boolean flag = pckMgr.hasSystemFeature("android.hardware.camera.front");
             boolean flag1 = pckMgr.hasSystemFeature("android.hardware.camera");
             boolean flag2;
             if (flag || flag1)
@@ -337,12 +326,11 @@ public class DeviceUtils {
      */
     public static boolean isPackageExist(Context context, String pckName) {
         try {
-            PackageInfo pckInfo = context.getPackageManager()
-                    .getPackageInfo(pckName, 0);
+            PackageInfo pckInfo = context.getPackageManager().getPackageInfo(pckName, 0);
             if (pckInfo != null)
                 return true;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e("TDvice", e.getMessage());
+            BubingLog.e("TDvice", e.getMessage());
         }
         return false;
     }
@@ -361,11 +349,9 @@ public class DeviceUtils {
     public static void hideSoftKeyboard(Context context, View view) {
         if (view == null)
             return;
-        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputMethodManager.isActive())
-            inputMethodManager.hideSoftInputFromWindow(
-                    view.getWindowToken(), 0);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     /**
@@ -399,8 +385,7 @@ public class DeviceUtils {
     public static boolean isTablet(Context context) {
         if (_isTablet == null) {
             boolean flag;
-            if ((0xf & context.getResources()
-                    .getConfiguration().screenLayout) >= 3)
+            if ((0xf & context.getResources().getConfiguration().screenLayout) >= 3)
                 flag = true;
             else
                 flag = false;
@@ -420,36 +405,25 @@ public class DeviceUtils {
     }
 
     public static void showSoftKeyboard(Context context, View view) {
-        ((InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE)).showSoftInput(view,
-                InputMethodManager.SHOW_FORCED);
+        ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(view, InputMethodManager.SHOW_FORCED);
     }
 
     public static void toogleSoftKeyboard(Context context, View view) {
-        ((InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE)).toggleSoftInput(0,
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public static boolean isSdcardReady() {
-        return Environment.MEDIA_MOUNTED.equals(Environment
-                .getExternalStorageState());
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
     public static String getCurCountryLan(Context context) {
-        return context.getResources().getConfiguration().locale
-                .getLanguage()
-                + "-"
-                + context.getResources().getConfiguration().locale
-                .getCountry();
+        return context.getResources().getConfiguration().locale.getLanguage() + "-" + context.getResources().getConfiguration().locale.getCountry();
     }
 
     public static boolean isZhCN(Context context) {
-        String lang = context.getResources()
-                .getConfiguration().locale.getCountry();
-        if (lang.equalsIgnoreCase("CN")) {
+        String lang = context.getResources().getConfiguration().locale.getCountry();
+        if (lang.equalsIgnoreCase("CN"))
             return true;
-        }
         return false;
     }
 
@@ -471,7 +445,6 @@ public class DeviceUtils {
         return str;
     }
 
-
     public static boolean isHaveMarket(Context context) {
         Intent intent = new Intent();
         intent.setAction("android.intent.action.MAIN");
@@ -482,27 +455,22 @@ public class DeviceUtils {
     }
 
     public static void setFullScreen(Activity activity) {
-        WindowManager.LayoutParams params = activity.getWindow()
-                .getAttributes();
+        WindowManager.LayoutParams params = activity.getWindow().getAttributes();
         params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         activity.getWindow().setAttributes(params);
-        activity.getWindow().addFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
     public static void cancelFullScreen(Activity activity) {
-        WindowManager.LayoutParams params = activity.getWindow()
-                .getAttributes();
+        WindowManager.LayoutParams params = activity.getWindow().getAttributes();
         params.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
         activity.getWindow().setAttributes(params);
-        activity.getWindow().clearFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
     public static PackageInfo getPackageInfo(Context context, String pckName) {
         try {
-            return context.getPackageManager()
-                    .getPackageInfo(pckName, 0);
+            return context.getPackageManager().getPackageInfo(pckName, 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -518,9 +486,7 @@ public class DeviceUtils {
     public static int getVersionCode(Context context) {
         int versionCode = 0;
         try {
-            versionCode = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(),
-                            0).versionCode;
+            versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException ex) {
             versionCode = 0;
         }
@@ -537,8 +503,7 @@ public class DeviceUtils {
     public static int getVersionCode(Context context, String packageName) {
         int versionCode = 0;
         try {
-            versionCode = context.getPackageManager()
-                    .getPackageInfo(packageName, 0).versionCode;
+            versionCode = context.getPackageManager().getPackageInfo(packageName, 0).versionCode;
         } catch (PackageManager.NameNotFoundException ex) {
             versionCode = 0;
         }
@@ -554,9 +519,7 @@ public class DeviceUtils {
     public static String getVersionName(Context context) {
         String name = "";
         try {
-            name = context.getPackageManager()
-                    .getPackageInfo(context.getPackageName(),
-                            0).versionName;
+            name = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException ex) {
             name = "";
         }
@@ -580,8 +543,7 @@ public class DeviceUtils {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file),
-                "application/vnd.android.package-archive");
+        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
         context.startActivity(intent);
     }
 
@@ -589,8 +551,7 @@ public class DeviceUtils {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file),
-                "application/vnd.android.package-archive");
+        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
         return intent;
     }
 
@@ -643,8 +604,7 @@ public class DeviceUtils {
     }
 
     public static void openApp(Context context, String packageName) {
-        Intent mainIntent = context.getPackageManager()
-                .getLaunchIntentForPackage(packageName);
+        Intent mainIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
         if (mainIntent == null) {
             mainIntent = new Intent(packageName);
         } else {
@@ -652,8 +612,7 @@ public class DeviceUtils {
         context.startActivity(mainIntent);
     }
 
-    public static boolean openAppActivity(Context context, String packageName,
-                                          String activityName) {
+    public static boolean openAppActivity(Context context, String packageName, String activityName) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         ComponentName cn = new ComponentName(packageName, activityName);
@@ -675,8 +634,7 @@ public class DeviceUtils {
     public static void uninstallApk(Context context, String packageName) {
         if (isPackageExist(context, packageName)) {
             Uri packageURI = Uri.parse("package:" + packageName);
-            Intent uninstallIntent = new Intent(Intent.ACTION_DELETE,
-                    packageURI);
+            Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, packageURI);
             context.startActivity(uninstallIntent);
         }
     }
@@ -685,8 +643,7 @@ public class DeviceUtils {
     public static void copyTextToBoard(Context context, String string) {
         if (TextUtils.isEmpty(string))
             return;
-        ClipboardManager clip = (ClipboardManager) context
-                .getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager clip = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         clip.setText(string);
     }
 
@@ -698,8 +655,7 @@ public class DeviceUtils {
      * @param content 内容
      * @param emails  邮件地址
      */
-    public static void sendEmail(Context context, String subject,
-                                 String content, String... emails) {
+    public static void sendEmail(Context context, String subject, String content, String... emails) {
         try {
             Intent intent = new Intent(Intent.ACTION_SEND);
             // 模拟器
@@ -724,9 +680,7 @@ public class DeviceUtils {
             obj = c.newInstance();
             field = c.getField("status_bar_height");
             x = Integer.parseInt(field.get(obj).toString());
-            sbar = context.getResources()
-                    .getDimensionPixelSize(x);
-
+            sbar = context.getResources().getDimensionPixelSize(x);
         } catch (Exception e1) {
             e1.printStackTrace();
         }
@@ -750,8 +704,7 @@ public class DeviceUtils {
      * @param title
      * @param url
      */
-    public static void showSystemShareOption(Activity context,
-                                             final String title, final String url) {
+    public static void showSystemShareOption(Activity context, final String title, final String url) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "分享：" + title);

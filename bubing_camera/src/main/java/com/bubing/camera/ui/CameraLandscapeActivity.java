@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +20,7 @@ import com.bubing.camera.constant.Constants;
 import com.bubing.camera.constant.StartupType;
 import com.bubing.camera.utils.BubingLog;
 import com.bubing.camera.utils.CameraUtils;
+import com.bubing.camera.utils.FilePathUtils;
 import com.bubing.camera.utils.ImageUtils;
 import com.bubing.camera.utils.PermissionUtils;
 import com.bubing.camera.utils.ScreenUtils;
@@ -224,6 +224,8 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
         }
     }
 
+    private File cropFile;//截图保存地址
+
     /**
      * 拍照
      */
@@ -261,7 +263,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
                                     (int) ((right - left) * (float) bitmap.getWidth()),
                                     (int) ((bottom - top) * (float) bitmap.getHeight()));
 
-                            final File cropFile = getCropFile();
+                            cropFile = getCropFile();
                             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cropFile));
                             cropBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
                             bos.flush();
@@ -289,107 +291,14 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
                 }).start();
             }
         });
-    }
-
-    private void takePhoto1() {
-        mCameraOptionLayout.setVisibility(View.GONE);
-        mCameraPreview.setEnabled(false);
-        mCameraPreview.takePhoto(new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(final byte[] data, Camera camera) {
-                camera.stopPreview();
-                //子线程处理图片，防止ANR
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            File originalFile = getOriginalFile();
-                            FileOutputStream originalFileOutputStream = new FileOutputStream(originalFile);
-                            originalFileOutputStream.write(data);
-                            originalFileOutputStream.close();
-
-                            Bitmap bitmap = BitmapFactory.decodeFile(originalFile.getPath());
-
-                            //计算裁剪位置
-                            float left, top, right, bottom;
-                            if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType) {
-                                left = (float) mCameraCropImage.getLeft() / (float) mCameraPreview.getWidth();
-                                top = ((float) mCameraCropContainerLayout.getTop() - (float) mCameraPreview.getTop()) / (float) mCameraPreview.getHeight();
-                                right = (float) mCameraCropImage.getRight() / (float) mCameraPreview.getWidth();
-                                bottom = (float) mCameraCropContainerLayout.getBottom() / (float) mCameraPreview.getHeight();
-                            } else {
-                                left = ((float) mCameraCropContainerLayout.getLeft() - (float) mCameraPreview.getLeft()) / (float) mCameraPreview.getWidth();
-                                top = (float) mCameraCropImage.getTop() / (float) mCameraPreview.getHeight();
-                                right = (float) mCameraCropContainerLayout.getRight() / (float) mCameraPreview.getWidth();
-                                bottom = (float) mCameraCropImage.getBottom() / (float) mCameraPreview.getHeight();
-                            }
-                            //裁剪及保存到文件
-                            Bitmap cropBitmap = Bitmap.createBitmap(bitmap,
-                                    (int) (left * (float) bitmap.getWidth()),
-                                    (int) (top * (float) bitmap.getHeight()),
-                                    (int) ((right - left) * (float) bitmap.getWidth()),
-                                    (int) ((bottom - top) * (float) bitmap.getHeight()));
-
-                            final File cropFile = getCropFile();
-                            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(cropFile));
-                            cropBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-                            bos.flush();
-                            bos.close();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mCameraResultLayout.setVisibility(View.VISIBLE);
-                                }
-                            });
-                            return;
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mCameraOptionLayout.setVisibility(View.VISIBLE);
-                                mCameraPreview.setEnabled(true);
-                            }
-                        });
-                    }
-                }).start();
-            }
-        });
-    }
-
-    /**
-     * @return 拍摄图片原始文件
-     */
-    private File getOriginalFile() {
-        if (StartupType.CAMERA_IDCARD_FRONT == mStartupType) {
-            return new File(getExternalCacheDir(), "idCardFront.jpg");
-        } else if (StartupType.CAMERA_IDCARD_BACK == mStartupType) {
-            return new File(getExternalCacheDir(), "idCardBack.jpg");
-        } else if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType) {
-            return new File(getExternalCacheDir(), "companyInfo.jpg");
-        } else if (StartupType.CAMERA_COMPANY_LANDSCAPE == mStartupType) {
-            return new File(getExternalCacheDir(), "companyInfo.jpg");
-        }
-        return new File(getExternalCacheDir(), "picture.jpg");
     }
 
     /**
      * @return 拍摄图片裁剪文件
      */
     private File getCropFile() {
-        if (StartupType.CAMERA_IDCARD_FRONT == mStartupType) {
-            return new File(getExternalCacheDir(), "idCardFrontCrop.jpg");
-        } else if (StartupType.CAMERA_IDCARD_BACK == mStartupType) {
-            return new File(getExternalCacheDir(), "idCardBackCrop.jpg");
-        } else if (StartupType.CAMERA_COMPANY_PORTRAIT == mStartupType) {
-            return new File(getExternalCacheDir(), "companyInfoCrop.jpg");
-        } else if (StartupType.CAMERA_COMPANY_LANDSCAPE == mStartupType) {
-            return new File(getExternalCacheDir(), "companyInfoCrop.jpg");
-        }
-        return new File(getExternalCacheDir(), "pictureCrop.jpg");
+        String filesPath = FilePathUtils.getInstance().getFileCacheDir(this, FilePathUtils.FileType.TEMP);//out path
+        return new File(filesPath, "crop_" + System.currentTimeMillis() + ".png");
     }
 
     /**
@@ -398,7 +307,7 @@ public class CameraLandscapeActivity extends Activity implements View.OnClickLis
     private void confirm() {
         Intent intent = new Intent();
         intent.putExtra(Constants.Key.RESULT_CERTIFICATE_TYPE, mStartupType.getValue());
-        intent.putExtra(Constants.Key.RESULT_CERTIFICATE_PATH, getCropFile().getPath());
+        intent.putExtra(Constants.Key.RESULT_CERTIFICATE_PATH, cropFile.getPath());
         setResult(RESULT_OK, intent);
         finish();
     }

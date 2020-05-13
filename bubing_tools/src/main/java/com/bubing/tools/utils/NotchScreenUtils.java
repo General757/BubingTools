@@ -2,7 +2,6 @@ package com.bubing.tools.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -51,7 +50,7 @@ public class NotchScreenUtils {
         try {
             return context.getPackageManager().hasSystemFeature("com.oppo.feature.screen.heteromorphism");
         } catch (Exception e) {
-            Log.e(TAG, "checkOppo notchScreen exception");
+            BubingLog.e(TAG, "checkOppo notchScreen exception");
         }
         return false;
     }
@@ -102,26 +101,18 @@ public class NotchScreenUtils {
      * @return true：刘海屏；false：非刘海屏
      */
     private static boolean checkHuaWei(Context context) {
-
         boolean ret = false;
-
         try {
-
             ClassLoader cl = context.getClassLoader();
-
             Class hwNotchSizeUtil = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil");
-
             Method get = hwNotchSizeUtil.getMethod("hasNotchInScreen");
-
             ret = (boolean) get.invoke(hwNotchSizeUtil);
-
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "hasNotchInScreen ClassNotFoundException");
+            BubingLog.e(TAG, "hasNotchInScreen ClassNotFoundException");
         } catch (NoSuchMethodException e) {
-            Log.e(TAG, "hasNotchInScreen NoSuchMethodException");
+            BubingLog.e(TAG, "hasNotchInScreen NoSuchMethodException");
         } catch (Exception e) {
-            Log.e(TAG, "hasNotchInScreen Exception");
-
+            BubingLog.e(TAG, "hasNotchInScreen Exception");
         }
         return ret;
     }
@@ -187,31 +178,18 @@ public class NotchScreenUtils {
      * @return int[0]值为刘海宽度 int[1]值为刘海高度。
      */
     public static int[] getNotchSize(Context context) {
-
         int[] ret = new int[]{0, 0};
-
         try {
-
             ClassLoader cl = context.getClassLoader();
-
             Class hwnotchsizeutil = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil");
-
             Method get = hwnotchsizeutil.getMethod("getNotchSize");
-
             ret = (int[]) get.invoke(hwnotchsizeutil);
-
         } catch (ClassNotFoundException e) {
-
-            Log.e("test", "getNotchSize ClassNotFoundException");
-
+            BubingLog.e("test", "getNotchSize ClassNotFoundException");
         } catch (NoSuchMethodException e) {
-
-            Log.e("test", "getNotchSize NoSuchMethodException");
-
+            BubingLog.e("test", "getNotchSize NoSuchMethodException");
         } catch (Exception e) {
-
-            Log.e("test", "getNotchSize Exception");
-
+            BubingLog.e("test", "getNotchSize Exception");
         }
         return ret;
     }
@@ -222,9 +200,9 @@ public class NotchScreenUtils {
      * @param window 应用页面window对象
      */
     public static void setFullScreenWindowLayoutInDisplayCutout(Window window) {
-        if (window == null) {
+        if (window == null)
             return;
-        }
+
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         try {
             Class layoutParamsExCls = Class.forName("com.huawei.android.view.LayoutParamsEx");
@@ -233,17 +211,17 @@ public class NotchScreenUtils {
             Method method = layoutParamsExCls.getMethod("addHwFlags", int.class);
             method.invoke(layoutParamsExObj, FLAG_NOTCH_SUPPORT_HW);
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "hw add notch screen flag api error");
+            BubingLog.e(TAG, "hw add notch screen flag api error");
         } catch (NoSuchMethodException e) {
-            Log.e(TAG, "hw add notch screen flag api error");
+            BubingLog.e(TAG, "hw add notch screen flag api error");
         } catch (IllegalAccessException e) {
-            Log.e(TAG, "hw add notch screen flag api error");
+            BubingLog.e(TAG, "hw add notch screen flag api error");
         } catch (InstantiationException e) {
-            Log.e(TAG, "hw add notch screen flag api error");
+            BubingLog.e(TAG, "hw add notch screen flag api error");
         } catch (InvocationTargetException e) {
-            Log.e(TAG, "hw add notch screen flag api error");
+            BubingLog.e(TAG, "hw add notch screen flag api error");
         } catch (Exception e) {
-            Log.e(TAG, "other Exception");
+            BubingLog.e(TAG, "other Exception");
         }
     }
 
@@ -253,9 +231,9 @@ public class NotchScreenUtils {
      * @param window 应用页面window对象
      */
     public static void setNotFullScreenWindowLayoutInDisplayCutout(Window window) {
-        if (window == null) {
+        if (window == null)
             return;
-        }
+
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         try {
             Class layoutParamsExCls = Class.forName("com.huawei.android.view.LayoutParamsEx");
@@ -263,19 +241,19 @@ public class NotchScreenUtils {
             Object layoutParamsExObj = con.newInstance(layoutParams);
             Method method = layoutParamsExCls.getMethod("clearHwFlags", int.class);
             method.invoke(layoutParamsExObj, FLAG_NOTCH_SUPPORT_HW);
-            Log.e(TAG, "............clear");
+            BubingLog.e(TAG, "............clear");
         } catch (ClassNotFoundException e) {
-            Log.e(TAG, "hw clear notch screen flag api error");
+            BubingLog.e(TAG, "hw clear notch screen flag api error");
         } catch (NoSuchMethodException e) {
-            Log.e(TAG, "hw clear notch screen flag api error");
+            BubingLog.e(TAG, "hw clear notch screen flag api error");
         } catch (IllegalAccessException e) {
-            Log.e(TAG, "hw clear notch screen flag api error");
+            BubingLog.e(TAG, "hw clear notch screen flag api error");
         } catch (InstantiationException e) {
-            Log.e(TAG, "hw clear notch screen flag api error");
+            BubingLog.e(TAG, "hw clear notch screen flag api error");
         } catch (InvocationTargetException e) {
-            Log.e(TAG, "hw clear notch screen flag api error");
+            BubingLog.e(TAG, "hw clear notch screen flag api error");
         } catch (Exception e) {
-            Log.e(TAG, "other Exception");
+            BubingLog.e(TAG, "other Exception");
         }
     }
 }

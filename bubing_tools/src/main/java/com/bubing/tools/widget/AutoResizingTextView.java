@@ -19,7 +19,6 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +28,9 @@ import android.widget.TextView;
 import com.bubing.tools.bitmap.BitmapGenerator;
 import com.bubing.tools.bitmap.text.TextBitmap;
 import com.bubing.tools.bitmap.text.TextBitmapGenerator;
+import com.bubing.tools.utils.BubingLog;
 import com.bubing.tools.utils.ChineseUtils;
 import com.bubing.tools.utils.CompatUtil;
-import com.bubing.tools.utils.LogUtils;
 import com.bubing.tools.utils.StringUtils;
 
 import java.io.File;
@@ -98,17 +97,17 @@ public class AutoResizingTextView extends AppCompatTextView implements BitmapGen
             mLayout = new StaticLayout(text, mPaint,
                     mWidthLimit, Layout.Alignment.ALIGN_NORMAL, mSpacingMult,
                     mSpacingAdd, true);
-            Log.i("suggest", "StaticLayout : line : " + mLayout.getLineCount());
+            BubingLog.i("suggest", "StaticLayout : line : " + mLayout.getLineCount());
             if (mMaxLines != NO_LINE_LIMIT
                     && (mLayout.getLineCount() > mMaxLines || getLineCount() > mMaxLines)) {
                 //大了
-                Log.d("suggest", "mMaxLines return  ,maxLine : " + mMaxLines);
+                BubingLog.d("suggest", "mMaxLines return  ,maxLine : " + mMaxLines);
                 return 1;
             }
             int tl = calculateMaxLinesByText(text);
             if (mLayout.getLineCount() > tl) {
                 //大了
-                Log.d("suggest", "mLayout return ,tl : " + tl);
+                BubingLog.d("suggest", "mLayout return ,tl : " + tl);
                 return 1;
             }
             mTextRect.bottom = mLayout.getHeight();
@@ -116,7 +115,7 @@ public class AutoResizingTextView extends AppCompatTextView implements BitmapGen
             //            }
 
             mTextRect.offsetTo(0, 0);
-            Log.d("BINARYTEXT", "suggest size : " + suggestedSize +
+            BubingLog.d("BINARYTEXT", "suggest size : " + suggestedSize +
                     " width : " + mTextRect.right +
                     " height : " + mTextRect.bottom +
                     " match : " + availableSPace.contains(mTextRect) +
@@ -242,7 +241,7 @@ public class AutoResizingTextView extends AppCompatTextView implements BitmapGen
         } else if (outputPath.endsWith("webp") || srcMimeType.endsWith("webp")) {
             bmp.compress(Bitmap.CompressFormat.WEBP, 100, outputStream);
         } else {
-            LogUtils.e(TAG, "not supported image format for '" + outputPath + "'");
+            BubingLog.e(TAG, "not supported image format for '" + outputPath + "'");
             outputStream.flush();
             outputStream.close();
             if (outputFile.exists()) {
@@ -290,7 +289,7 @@ public class AutoResizingTextView extends AppCompatTextView implements BitmapGen
         int lo = start;
         int hi = end - 1;
         int mid = 0;
-        Log.d("BINARYTEXT", "start : " + start +
+        BubingLog.d("BINARYTEXT", "start : " + start +
                 " end : " + end +
                 " width : " + availableSpace.right +
                 " height : " + availableSpace.bottom);
@@ -308,7 +307,7 @@ public class AutoResizingTextView extends AppCompatTextView implements BitmapGen
             }
         }
 
-        Log.d("BINARYTEXT", "last best : " + lastBest);
+        BubingLog.d("BINARYTEXT", "last best : " + lastBest);
         // make sure to return last best
         // this is what should always be returned
         return lastBest;
@@ -590,7 +589,7 @@ public class AutoResizingTextView extends AppCompatTextView implements BitmapGen
         mWidthLimit = (int) mAvailableSpaceRect.right;
         //处理偶现计算行数不准确的问题
         mWidthLimit = mWidthLimit < 1 ? mWidthLimit : mWidthLimit - 1;
-        Log.i("mWidthLimit", "mWidthLimit : " + mWidthLimit);
+        BubingLog.i("mWidthLimit", "mWidthLimit : " + mWidthLimit);
         mPaint = new TextPaint(getPaint());
         super.setTextSize(
                 TypedValue.COMPLEX_UNIT_PX,

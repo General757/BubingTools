@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -116,6 +117,67 @@ public class FilePathUtils {
         return absoluteFolderPath.toString();
     }
 
+    public String getFileCacheDir(Context app, FileType type) {
+        String dir = null;
+        switch (type) {
+            case BASE:
+                dir = getFilesCachePath(app, "");
+                break;
+            case TEMP:
+                dir = getFilesCachePath(app, DIR_TEMP);
+                break;
+            case SPEECH:
+                dir = getFilesCachePath(app, DIR_SPEECH);
+                break;
+            case VIDEO_TO:
+                dir = getFilesCachePath(app, DIR_VIDEO_TO);
+                break;
+            case VIDEO_FROM:
+                dir = getFilesCachePath(app, DIR_VIDEO_FROM);
+                break;
+            case SETTINGS:
+                dir = getFilesCachePath(app, DIR_SETTINGS);
+                break;
+            case PHOTO_TO:
+                dir = getFilesCachePath(app, DIR_PHOTO_TO);
+                break;
+            case PHOTO_FROM:
+                dir = getFilesCachePath(app, DIR_PHOTO_FROM);
+                break;
+            case CHAT_COVER:
+                dir = getFilesCachePath(app, DIR_CHAT_COVER);
+                break;
+            case ASSETBUNDLE:
+                dir = getFilesCachePath(app, DIR_ASSETBUNDLE);
+                break;
+        }
+        return dir;
+    }
+
+    /**
+     * 应用程序缓存原理：
+     * 1.当SD卡存在或者SD卡不可被移除的时候，就调用getExternalCacheDir()方法来获取缓存路径，否则就调用getCacheDir()方法来获取缓存路径<br>
+     * 2.前者是/sdcard/Android/data/<application package>/cache 这个路径<br>
+     * 3.后者获取到的是 /data/data/<application package>/cache 这个路径<br>
+     *
+     * @param folderPath 缓存目录
+     */
+    public String getFilesCachePath(Context context, String folderPath) {
+        File cacheDir;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable())
+            cacheDir = context.getExternalCacheDir();
+        else
+            cacheDir = context.getCacheDir();
+        if (cacheDir == null) // if cacheDir is null throws NullPointerException
+            cacheDir = context.getCacheDir();
+
+        File file = new File(cacheDir.getPath() + File.separator + folderPath);
+        StringBuilder absoluteFolderPath = new StringBuilder(file.getAbsolutePath());
+        if (!absoluteFolderPath.toString().endsWith("/"))
+            absoluteFolderPath.append("/");
+        return absoluteFolderPath.toString();
+    }
+
     /**
      * 清理指定文件夹中几天前的文件
      *
@@ -181,7 +243,7 @@ public class FilePathUtils {
             LogUtils.e(TAG, "!!! 联想.");
             uriSource = Uri.fromFile(file);
         } else {
-            uriSource = FileProvider.getUriForFile(context, applicationId + ".provider", file);
+            uriSource = FileProvider.getUriForFile(context, UriUtils.getFileProviderName(context), file);
         }
         return uriSource;
     }

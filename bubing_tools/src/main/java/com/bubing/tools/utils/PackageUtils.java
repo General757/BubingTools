@@ -17,7 +17,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -253,7 +252,7 @@ public class PackageUtils {
                 }
             } catch (NumberFormatException var2) {
                 var2.printStackTrace();
-                Log.e("PackageUtils", "pm get-install-location error");
+                BubingLog.e("PackageUtils", "pm get-install-location error");
             }
         }
 

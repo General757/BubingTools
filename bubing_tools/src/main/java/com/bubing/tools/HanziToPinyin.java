@@ -6,7 +6,8 @@
 package com.bubing.tools;
 
 import android.text.TextUtils;
-import android.util.Log;
+
+import com.bubing.tools.utils.BubingLog;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class HanziToPinyin {
                     }
                 }
 
-                Log.w("HanziToPinyin", "There is no Chinese collator, HanziToPinyin is disabled");
+                BubingLog.w("HanziToPinyin", "There is no Chinese collator, HanziToPinyin is disabled");
                 sInstance = new HanziToPinyin(false);
                 return sInstance;
             }

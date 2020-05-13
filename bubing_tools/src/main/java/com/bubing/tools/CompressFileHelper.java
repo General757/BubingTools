@@ -5,7 +5,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.util.Log;
+
+import com.bubing.tools.utils.BubingLog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -184,12 +185,12 @@ public class CompressFileHelper
             {
                 if (newFile.delete())
                 {
-                    Log.d("CompressFileHelper", "Delete old " + newName + " file");
+                    BubingLog.d("CompressFileHelper", "Delete old " + newName + " file");
                 }
             }
             if (file.renameTo(newFile))
             {
-                Log.d("CompressFileHelper", "Rename file to " + newName);
+                BubingLog.d("CompressFileHelper", "Rename file to " + newName);
             }
         }
         return newFile;
