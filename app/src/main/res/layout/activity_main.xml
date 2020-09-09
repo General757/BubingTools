@@ -21,6 +21,7 @@
         android:gravity="center"
         android:onClick="onFrameworkClick"
         android:text="FrameworkClick" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -28,4 +29,12 @@
         android:gravity="center"
         android:onClick="onCameraPhoto"
         android:text="CameraPhoto" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:onClick="onLoadingClicked"
+        android:text="Loading" />
 </LinearLayout>

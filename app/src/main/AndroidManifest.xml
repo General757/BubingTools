@@ -52,6 +52,11 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/ActicityTheme" />
+
+        <activity
+            android:name=".LoadingActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

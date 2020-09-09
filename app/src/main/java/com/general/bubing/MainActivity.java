@@ -28,4 +28,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CameraPhoto1Activity.class);
         startActivity(intent);
     }
+
+    public void onLoadingClicked(View view) {
+        Intent intent = new Intent(this, LoadingActivity.class);
+        startActivity(intent);
+    }
 }

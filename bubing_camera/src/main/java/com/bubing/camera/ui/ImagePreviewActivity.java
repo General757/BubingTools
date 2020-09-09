@@ -180,18 +180,13 @@ public class ImagePreviewActivity extends AppCompatActivity implements PreviewPh
 
         // Schedule a runnable to remove the status and navigation bar after a delay
         mHideHandler.removeCallbacks(mShowPart2Runnable);
-
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
-
     }
-
 
     private void show() {
         // Show the system bar
-        if (Build.VERSION.SDK_INT >= 16) {
+        if (Build.VERSION.SDK_INT >= 16)
             SystemUtils.getInstance().systemUiShow(this, decorView);
-        }
-
         mVisible = true;
 
         // Schedule a runnable to display UI elements after a delay
@@ -229,9 +224,8 @@ public class ImagePreviewActivity extends AppCompatActivity implements PreviewPh
             FrameLayout mRootView = (FrameLayout) findViewById(R.id.m_root_view);
             mRootView.setFitsSystemWindows(true);
             mToolBar.setPadding(0, SystemUtils.getInstance().getStatusBarHeight(this), 0, 0);
-            if (ColorUtils.isWhiteColor(statusColor)) {
+            if (ColorUtils.isWhiteColor(statusColor))
                 SystemUtils.getInstance().setStatusDark(this, true);
-            }
         }
         mBottomBar = (RelativeLayout) findViewById(R.id.m_bottom_bar);
         ivSelector = (ImageView) findViewById(R.id.iv_selector);
@@ -242,9 +236,8 @@ public class ImagePreviewActivity extends AppCompatActivity implements PreviewPh
         previewFragment = (ImagePreviewFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_preview);
         if (Setting.showOriginalMenu) {
             processOriginalMenu();
-        } else {
+        } else
             tvOriginal.setVisibility(View.GONE);
-        }
 
         setClick(tvOriginal, tvDone, ivSelector);
 
@@ -267,13 +260,12 @@ public class ImagePreviewActivity extends AppCompatActivity implements PreviewPh
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 View view = snapHelper.findSnapView(lm);
-                if (view == null) {
+                if (view == null)
                     return;
-                }
                 int position = lm.getPosition(view);
-                if (lastPosition == position) {
+                if (lastPosition == position)
                     return;
-                }
+
                 lastPosition = position;
                 previewFragment.setSelectedPosition(-1);
                 tvNumber.setText(getString(R.string.preview_current_number, lastPosition + 1, photos.size()));

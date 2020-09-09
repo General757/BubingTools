@@ -35,6 +35,7 @@ dependencies {
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
+    implementation project(':bubing_tools')
     implementation project(':bubing_camera')
     implementation project(':bubing_framework')
 }
