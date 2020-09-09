@@ -91,7 +91,6 @@ public class FileUtils {
         throw new Error("Do not need instantiate!");
     }
 
-
     public static File getFile(File directory, String... names) {
         if (directory == null) {
             throw new NullPointerException("directorydirectory must not be null");
@@ -1436,6 +1435,10 @@ public class FileUtils {
         public FileExistsException(File file) {
             super("File " + file + " exists");
         }
+    }
+
+    public static boolean deleteFile(File file) {
+        return file.delete();
     }
 
     public static void DeleteFile(File file) {

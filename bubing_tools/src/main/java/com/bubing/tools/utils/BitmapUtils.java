@@ -52,7 +52,6 @@ import java.util.HashMap;
  * Created by generalYan on 2018/12/29.
  * Bitmap 工具
  */
-
 public class BitmapUtils {
 
     // 获取视频第一帧

@@ -14,8 +14,8 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
  * Created by generalYan on 2019/10/21.
  * 拼音字母处理工具
  */
-public class PinyinUtil {
-    public PinyinUtil() {
+public class PinyinUtils {
+    public PinyinUtils() {
     }
 
     public static final String getPinYinHeadChar(String str) {
