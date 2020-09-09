@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import com.bubing.tools.Charsets;
