@@ -40,13 +40,12 @@ dependencies {
 
     //org.apache.commons.codec
     api 'commons-codec:commons-codec:1.13'
-
-    implementation files('libs/pinyin4j-2.5.0.jar')
+    api 'com.belerweb:pinyin4j:2.5.1'
 }
 
 ext {
     releaseArtifact = 'bubing_tools'
-    releaseVersion = '0.0.1'
+    releaseVersion = '0.0.3'
 }
 /**①.发布到本地maven仓库*/
 //apply from: '../mavenLocal.gradle'
